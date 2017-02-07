@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/content_match_details"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:layout_marginTop="?attr/actionBarSize"
+    tools:context="com.youniversals.playupgo.matchdetail.MatchDetailsActivity"
+    tools:showIn="@layout/activity_match_details">
+
+    <com.github.florent37.diagonallayout.DiagonalLayout
+        android:id="@+id/team1"
+        android:layout_below="@+id/details_container"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:elevation="10dp"
+        app:diagonal_angle="10"
+        app:diagonal_gravity="bottom|right">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@color/material_color_light_blue_400" />
+
+        <LinearLayout
+            android:id="@+id/team1members"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/material_increment_0.5x"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                app:civ_border_color="@color/white"
+                app:civ_border_width="1dp"
+                android:src="@drawable/ic_sport_volleyball"
+                android:layout_width="@dimen/material_increment_1x"
+                android:layout_height="@dimen/material_increment_1x" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                tools:src="@color/webLightGreen"
+                android:src="@drawable/ic_sport_volleyball"
+                style="@style/TeamMemberStyle" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                app:civ_border_color="@color/white"
+                app:civ_border_width="1dp"
+                tools:src="@color/webLightGreen"
+                android:src="@drawable/ic_sport_volleyball"
+                android:layout_marginLeft="-20dp"
+                android:layout_width="@dimen/material_increment_1x"
+                android:layout_height="@dimen/material_increment_1x" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                app:civ_border_color="@color/white"
+                app:civ_border_width="1dp"
+                tools:src="@color/webGray"
+                android:src="@drawable/ic_sport_volleyball"
+                android:layout_marginLeft="-20dp"
+                android:layout_width="@dimen/material_increment_1x"
+                android:layout_height="@dimen/material_increment_1x" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                app:civ_border_color="@color/white"
+                app:civ_border_width="1dp"
+                tools:src="@color/webBlue"
+                android:src="@drawable/ic_sport_volleyball"
+                android:layout_marginLeft="-20dp"
+                android:layout_width="@dimen/material_increment_1x"
+                android:layout_height="@dimen/material_increment_1x" />
+        </LinearLayout>
+
+    </com.github.florent37.diagonallayout.DiagonalLayout>
+
+    <com.github.florent37.diagonallayout.DiagonalLayout
+        android:id="@+id/team2"
+        android:layout_width="match_parent"
+        android:layout_marginTop="100dp"
+        android:layout_height="150dp"
+        android:elevation="10dp"
+        app:diagonal_angle="10"
+        app:diagonal_gravity="top|left"
+        android:layout_below="@+id/details_container"
+        android:layout_alignParentStart="true">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@color/material_color_red_400" />
+
+        <LinearLayout
+            android:id="@+id/team2members"
+            android:gravity="center"
+            android:layout_marginBottom="@dimen/material_increment_0.5x"
+            android:layout_gravity="center_horizontal|bottom"
+            android:orientation="horizontal"
+            android:layoutDirection="rtl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                app:civ_border_color="@color/white"
+                app:civ_border_width="1dp"
+                tools:src="@color/colorPrimaryDark"
+                android:layout_width="@dimen/material_increment_1x"
+                android:layout_height="@dimen/material_increment_1x" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                app:civ_border_color="@color/white"
+                app:civ_border_width="1dp"
+                tools:src="@color/webOrange"
+                android:layout_marginRight="-20dp"
+                android:layout_width="@dimen/material_increment_1x"
+                android:layout_height="@dimen/material_increment_1x" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                app:civ_border_color="@color/white"
+                app:civ_border_width="1dp"
+                tools:src="@color/webLightGreen"
+                android:layout_marginRight="-20dp"
+                android:layout_width="@dimen/material_increment_1x"
+                android:layout_height="@dimen/material_increment_1x" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                app:civ_border_color="@color/white"
+                app:civ_border_width="1dp"
+                tools:src="@color/webGray"
+                android:layout_marginRight="-20dp"
+                android:layout_width="@dimen/material_increment_1x"
+                android:layout_height="@dimen/material_increment_1x" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                app:civ_border_color="@color/white"
+                app:civ_border_width="1dp"
+                tools:src="@color/webBlue"
+                android:layout_marginRight="-20dp"
+                android:layout_width="@dimen/material_increment_1x"
+                android:layout_height="@dimen/material_increment_1x" />
+
+        </LinearLayout>
+
+    </com.github.florent37.diagonallayout.DiagonalLayout>
+
+    <com.dd.CircularProgressButton
+        android:layout_below="@+id/team2"
+        android:layout_width="match_parent"
+        app:cpb_textIdle="Join Game"
+        app:cpb_textComplete="Joined!"
+        android:layout_marginTop="@dimen/material_baseline_grid_1x"
+        android:layout_height="@dimen/material_increment_1x" />
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/details_container"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:transitionName="match"
+        app:cardUseCompatPadding="true"
+        app:cardPreventCornerOverlap="true"
+        app:cardElevation="@dimen/cardview_default_elevation"
+        app:cardCornerRadius="4dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+
+        <ImageView
+            android:scaleType="fitXY"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <RelativeLayout
+            android:padding="@dimen/material_card_edge_margin"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/distanceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#555555"
+                android:textSize="9sp"
+                tools:text="12km" />
+
+            <TextView
+                android:id="@+id/matchTitleTextView"
+                android:layout_below="@+id/distanceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lineSpacingMultiplier="0.8"
+                android:textColor="#000000"
+                android:textSize="12sp"
+                android:maxLines="3"
+                android:ellipsize="end"
+                tools:text="Let's play tonight" />
+
+            <TextView
+                android:id="@+id/matchDetailsTextView"
+                tools:text="blah\nblah blah\nblah blah blah"
+                android:layout_marginTop="@dimen/material_baseline_grid_0.5x"
+                android:layout_below="@id/matchTitleTextView"
+                android:textSize="12sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:id="@+id/matchStatusImageView"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/xml_status_red"
+                android:layout_width="12dp"
+                android:layout_height="12dp" />
+
+            <TextView
+                android:id="@+id/playersJoinedTextView"
+                android:text="0/10"
+                android:textSize="9sp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/matchDateTextView"
+                tools:text="12/12/2016"
+                android:textSize="9sp"
+                android:layout_alignParentRight="true"
+                android:layout_above="@+id/playersJoinedTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

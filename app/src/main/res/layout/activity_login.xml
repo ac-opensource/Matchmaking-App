@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/offWhite"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:padding="48dp"
+        android:src="@drawable/img_app_icon"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.6"
+        />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center">
+
+        <com.dd.CircularProgressButton
+            android:id="@+id/btn_sign_in_email"
+            android:layout_width="300dp"
+            android:layout_height="42dp"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:visibility="gone"
+            app:cpb_cornerRadius="5dp"
+            app:cpb_textComplete="Success"
+            app:cpb_textError="Failed"
+            app:cpb_textIdle="Sign In" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:text="Or"
+            android:textSize="24sp"
+            android:layout_margin="10dp"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/facebookSignIn"
+            android:layout_width="300dp"
+            android:layout_height="55dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="30dp" />
+
+    </LinearLayout>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/btn_sign_up"
+        android:layout_gravity="center_horizontal"
+        android:textSize="18sp"
+        android:text="Not yet a Player? Sign up HERE!"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/linkBlue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginBottom="40dp"/>
+
+    <LinearLayout
+        android:layout_marginTop="25dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:textAlignment="center"
+                android:textSize="22sp"
+                android:text="ABOUT"
+                android:textColor="@color/linkBlue"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:textAlignment="center"
+                android:textSize="22sp"
+                android:text="PRIVACY"
+                android:textColor="@color/linkBlue"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:textAlignment="center"
+                android:textSize="22sp"
+                android:text="PLAY-UP"
+                android:textColor="@color/linkBlue"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_gravity="center_horizontal"
+            android:text="Powered by Youniversals"
+            android:layout_margin="10dp"
+            android:textSize="22sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</LinearLayout>
