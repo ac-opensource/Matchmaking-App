@@ -143,6 +143,7 @@
     </com.github.florent37.diagonallayout.DiagonalLayout>
 
     <com.dd.CircularProgressButton
+        android:id="@+id/joinButton"
         android:layout_below="@+id/team2"
         android:layout_width="match_parent"
         app:cpb_textIdle="Join Game"

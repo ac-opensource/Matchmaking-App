@@ -20,7 +20,13 @@ class MatchModel(val restApi: RestApi) {
     }
 
     fun getNearbyMatches(latLng: String, maxDistance: Int): Observable<List<Match>> {
-        return restApi.nearMatches(latLng, maxDistance)
+//        return restApi.nearMatches(latLng, maxDistance)
+        return restApi.nearMatches("0,0", maxDistance)
+    }
+
+    fun joinMatch(matchId: Long) : Observable<UserMatch> {
+        val userMatch = UserMatch(matchId, 1)
+        return restApi.joinMatch(userMatch)
     }
 
 }

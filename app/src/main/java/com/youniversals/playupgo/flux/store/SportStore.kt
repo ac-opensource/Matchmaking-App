@@ -45,14 +45,11 @@ class SportStore : Store<SportStore>() {
         error = null
     }
 
-
     private fun updateData(action: Action) {
         sports = null
         action.data ?: return
         if (action.data is List<*> && action.data.size > 0) {
-            if (action.data[0] is Sport) {
-                sports = action.data as List<Sport>?
-            }
+            if (action.data[0] is Sport) sports = action.data as List<Sport>?
         }
     }
 

@@ -75,14 +75,14 @@ data class Location(
 }
 
 data class Match(
-        val id: Long,
-        val userId: Long,
-        val sportId: Long,
-        val location: Location,
-        val description: String,
-        val title: String,
-        val date: Long,
-        val status: String
+        val id: Long = 0,
+        val userId: Long = 0,
+        val sportId: Long = 0,
+        val location: Location? = null,
+        val description: String = "",
+        val title: String = "",
+        val date: Long = 0,
+        val status: String = ""
 ) : Parcelable {
     companion object {
         @JvmField val CREATOR: Parcelable.Creator<Match> = object : Parcelable.Creator<Match> {
@@ -118,11 +118,10 @@ data class MatchJson(
 )
 
 data class UserMatch(
-        val id: Long,
         val matchId: Long,
-        val group: Long,
         val userId: Long,
-        val user: User
+        val group: Long? = 1,
+        val user: User? = null
 )
 
 data class Party(
