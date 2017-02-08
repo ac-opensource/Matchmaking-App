@@ -1,7 +1,9 @@
 package com.youniversals.playupgo.flux.model
 
+import com.pixplicity.easyprefs.library.Prefs
 import com.youniversals.playupgo.api.RestApi
 import com.youniversals.playupgo.data.Match
+import com.youniversals.playupgo.data.User
 import com.youniversals.playupgo.data.UserMatch
 import rx.Observable
 
@@ -26,7 +28,11 @@ class MatchModel(val restApi: RestApi) {
 
     fun joinMatch(matchId: Long) : Observable<UserMatch> {
         val userMatch = UserMatch(matchId, 1)
-        return restApi.joinMatch(userMatch)
+        return restApi.joinMatch(userMatch).map {
+            it.copy(user = User(
+                    id = Prefs.getLong("userId", 0),
+                    username = Prefs.getString("username", "")))
+        }
     }
 
 }

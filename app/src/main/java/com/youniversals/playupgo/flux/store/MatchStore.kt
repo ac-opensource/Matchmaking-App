@@ -91,6 +91,12 @@ class MatchStore : Store<MatchStore>() {
                 matches = action.data as List<Match>?
         } else if (action.data is MatchJson) {
             newMatch = action.data
+        } else if (action.data is UserMatch) {
+            if (usersByMatch == null) {
+                usersByMatch = listOf(action.data)
+            } else {
+                usersByMatch?.plus(action.data)
+            }
         }
     }
 
