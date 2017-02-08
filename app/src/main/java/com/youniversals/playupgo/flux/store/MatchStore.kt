@@ -8,6 +8,8 @@ import com.youniversals.playupgo.flux.AppError
 import com.youniversals.playupgo.flux.Store
 import com.youniversals.playupgo.flux.action.MatchActionCreator.Companion.ACTION_GET_NEARBY_MATCHES_S
 import com.youniversals.playupgo.flux.action.MatchActionCreator.Companion.ACTION_GET_USER_MATCHES_S
+import com.youniversals.playupgo.flux.action.MatchActionCreator.Companion.ACTION_JOIN_MATCH_F
+import com.youniversals.playupgo.flux.action.MatchActionCreator.Companion.ACTION_JOIN_MATCH_S
 import com.youniversals.playupgo.flux.action.MatchActionCreator.Companion.ACTION_UPDATE_NEW_MATCH_S
 import rx.Observable
 
@@ -50,6 +52,20 @@ class MatchStore : Store<MatchStore>() {
                 notifyStoreChanged(this)
             }
             ACTION_UPDATE_NEW_MATCH_S -> {
+                updateState()
+                updateData(action)
+                updateError(action)
+                updateAction(action)
+                notifyStoreChanged(this)
+            }
+            ACTION_JOIN_MATCH_S -> {
+                updateState()
+                updateData(action)
+                updateError(action)
+                updateAction(action)
+                notifyStoreChanged(this)
+            }
+            ACTION_JOIN_MATCH_F -> {
                 updateState()
                 updateData(action)
                 updateError(action)

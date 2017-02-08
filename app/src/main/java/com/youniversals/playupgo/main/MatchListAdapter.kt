@@ -1,7 +1,6 @@
 package com.youniversals.playupgo.main
 
 import android.content.Context
-import android.graphics.Color
 import android.support.annotation.LayoutRes
 import android.text.format.DateUtils
 import android.util.AttributeSet
@@ -9,7 +8,6 @@ import android.view.View
 import android.widget.LinearLayout
 import com.airbnb.epoxy.EpoxyAdapter
 import com.airbnb.epoxy.EpoxyModel
-import com.airbnb.epoxy.EpoxyViewHolder
 import com.youniversals.playupgo.R
 import com.youniversals.playupgo.data.Match
 
@@ -36,27 +34,10 @@ class MatchListAdapter(var onClickListener: View.OnClickListener) : EpoxyAdapter
         }
 
         if (matches == null || matches.isEmpty()) {
-            addModels(NoMatchFoundModel(), AddMatchModel(onClickListener))
-        }
-    }
-
-    override fun onBindViewHolder(holder: EpoxyViewHolder, position: Int) {
-        super.onBindViewHolder(holder, position)
-        if (selectedPosition === position) {
-            // Here I am just highlighting the background
-            holder.itemView.setBackgroundColor(Color.GREEN)
-        } else {
-            holder.itemView.setBackgroundColor(Color.TRANSPARENT)
+            addModel(NoMatchFoundModel())
         }
 
-        holder.itemView.setOnClickListener {
-            // Updating old as well as new positions
-            notifyItemChanged(selectedPosition)
-            selectedPosition = position
-            notifyItemChanged(selectedPosition)
-
-            // Do your another stuff for your onClick
-        }
+        addModel(AddMatchModel(onClickListener))
     }
 }
 
