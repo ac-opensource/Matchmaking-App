@@ -7,6 +7,7 @@ import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.login.LoginResult
+import com.pixplicity.easyprefs.library.Prefs
 import com.youniversals.playupgo.PlayUpApplication
 import com.youniversals.playupgo.R
 import com.youniversals.playupgo.flux.BaseActivity
@@ -38,6 +39,13 @@ class LoginActivity : BaseActivity() {
     private fun initialize() {
         addSubscriptionToUnsubscribe(
                 userStore.observableWithFilter(ACTION_LOGIN_SUCCESS).subscribe({
+                    it.user()?.let {
+                        Prefs.putLong("userId", it.userId)
+                        Prefs.putLong("externalId", it.id)
+                        Prefs.putString("username", "${it.provider}.${it.id}")
+                        Prefs.putString("email", "${it.id}@loopback.${it.provider}.com")
+
+                    }
                     MainActivity.startActivity(this)
                 }, {
                     Log.e("A-Ar", it.message, it)
