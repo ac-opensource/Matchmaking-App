@@ -1,9 +1,6 @@
 package com.youniversals.playupgo.api
 
-import com.youniversals.playupgo.data.AccessToken
-import com.youniversals.playupgo.data.Match
-import com.youniversals.playupgo.data.Sport
-import com.youniversals.playupgo.data.UserMatch
+import com.youniversals.playupgo.data.*
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -24,10 +21,11 @@ interface RestApi {
 
     @GET("/api/matches")
     fun nearMatches(@Query("filter[where][location][near]") location: String,
-                    @Query("filter[where][location][maxDistance]") maxDistance: Int = 5): Observable<List<Match>>
+                    @Query("filter[where][location][maxDistance]") maxDistance: Int = 5,
+                    @Query("filter[where][date][gt]") date: Long = System.currentTimeMillis()): Observable<List<Match>>
 
     @POST("/api/matches")
-    fun createMatch(@Body match: Match): Observable<Match>
+    fun createMatch(@Body match: MatchJson): Observable<Match>
 
     @GET("/api/sports")
     fun getSports(): Observable<List<Sport>>

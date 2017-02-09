@@ -24,7 +24,7 @@ data class AccessToken(
 data class User(
         val id: Long,
         val username: String,
-        val email: String
+        val email: String = ""
 )
 
 data class Name(
@@ -34,6 +34,7 @@ data class Name(
 
 data class UserIdentity(
         val id: Long,
+        val provider: String,
         val profileUrl: String,
         val externalId: Long,
         val name: Name,
@@ -113,8 +114,8 @@ data class MatchJson(
         val location: Location?,
         val description: String,
         val title: String,
-        val date: Long,
-        val status: String
+        val date: Long = System.currentTimeMillis(),
+        val status: String = "new"
 )
 
 data class UserMatch(

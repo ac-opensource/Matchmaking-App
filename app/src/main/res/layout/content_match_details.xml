@@ -23,6 +23,7 @@
         app:diagonal_gravity="bottom|right">
 
         <ImageView
+            android:id="@+id/team1backgroundImageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
@@ -39,35 +40,30 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 app:civ_border_color="@color/white"
-                app:civ_border_width="1dp"
-                android:src="@drawable/ic_sport_volleyball"
+                app:civ_border_width="4dp"
                 android:layout_width="@dimen/material_increment_1x"
                 android:layout_height="@dimen/material_increment_1x" />
             <de.hdodenhof.circleimageview.CircleImageView
                 tools:src="@color/webLightGreen"
-                android:src="@drawable/ic_sport_volleyball"
                 style="@style/TeamMemberStyle" />
             <de.hdodenhof.circleimageview.CircleImageView
                 app:civ_border_color="@color/white"
-                app:civ_border_width="1dp"
+                app:civ_border_width="4dp"
                 tools:src="@color/webLightGreen"
-                android:src="@drawable/ic_sport_volleyball"
                 android:layout_marginLeft="-20dp"
                 android:layout_width="@dimen/material_increment_1x"
                 android:layout_height="@dimen/material_increment_1x" />
             <de.hdodenhof.circleimageview.CircleImageView
                 app:civ_border_color="@color/white"
-                app:civ_border_width="1dp"
+                app:civ_border_width="4dp"
                 tools:src="@color/webGray"
-                android:src="@drawable/ic_sport_volleyball"
                 android:layout_marginLeft="-20dp"
                 android:layout_width="@dimen/material_increment_1x"
                 android:layout_height="@dimen/material_increment_1x" />
             <de.hdodenhof.circleimageview.CircleImageView
                 app:civ_border_color="@color/white"
-                app:civ_border_width="1dp"
+                app:civ_border_width="4dp"
                 tools:src="@color/webBlue"
-                android:src="@drawable/ic_sport_volleyball"
                 android:layout_marginLeft="-20dp"
                 android:layout_width="@dimen/material_increment_1x"
                 android:layout_height="@dimen/material_increment_1x" />
@@ -87,6 +83,7 @@
         android:layout_alignParentStart="true">
 
         <ImageView
+            android:id="@+id/team2backgroundImageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
@@ -105,34 +102,34 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 app:civ_border_color="@color/white"
-                app:civ_border_width="1dp"
+                app:civ_border_width="4dp"
                 tools:src="@color/colorPrimaryDark"
                 android:layout_width="@dimen/material_increment_1x"
                 android:layout_height="@dimen/material_increment_1x" />
             <de.hdodenhof.circleimageview.CircleImageView
                 app:civ_border_color="@color/white"
-                app:civ_border_width="1dp"
+                app:civ_border_width="4dp"
                 tools:src="@color/webOrange"
                 android:layout_marginRight="-20dp"
                 android:layout_width="@dimen/material_increment_1x"
                 android:layout_height="@dimen/material_increment_1x" />
             <de.hdodenhof.circleimageview.CircleImageView
                 app:civ_border_color="@color/white"
-                app:civ_border_width="1dp"
+                app:civ_border_width="4dp"
                 tools:src="@color/webLightGreen"
                 android:layout_marginRight="-20dp"
                 android:layout_width="@dimen/material_increment_1x"
                 android:layout_height="@dimen/material_increment_1x" />
             <de.hdodenhof.circleimageview.CircleImageView
                 app:civ_border_color="@color/white"
-                app:civ_border_width="1dp"
+                app:civ_border_width="4dp"
                 tools:src="@color/webGray"
                 android:layout_marginRight="-20dp"
                 android:layout_width="@dimen/material_increment_1x"
                 android:layout_height="@dimen/material_increment_1x" />
             <de.hdodenhof.circleimageview.CircleImageView
                 app:civ_border_color="@color/white"
-                app:civ_border_width="1dp"
+                app:civ_border_width="4dp"
                 tools:src="@color/webBlue"
                 android:layout_marginRight="-20dp"
                 android:layout_width="@dimen/material_increment_1x"

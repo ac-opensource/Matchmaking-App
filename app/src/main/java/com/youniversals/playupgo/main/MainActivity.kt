@@ -1,6 +1,7 @@
 package com.youniversals.playupgo.main
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.location.Geocoder
@@ -11,11 +12,13 @@ import android.view.View.*
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.places.Places
+import com.google.android.gms.location.places.ui.PlacePicker
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.tbruyelle.rxpermissions.RxPermissions
 import com.youniversals.playupgo.PlayUpApplication
 import com.youniversals.playupgo.R
@@ -56,6 +59,8 @@ class MainActivity : BaseActivity(), OnMapReadyCallback, GoogleApiClient.OnConne
 
     private var  mGoogleApiClient: GoogleApiClient? = null
 
+    private val PLACE_PICKER_REQUEST: Int = 1000
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         PlayUpApplication.fluxComponent.inject(this)
@@ -82,6 +87,11 @@ class MainActivity : BaseActivity(), OnMapReadyCallback, GoogleApiClient.OnConne
                 val latLng = "${mMap?.cameraPosition?.target?.latitude},${mMap?.cameraPosition?.target?.longitude}"
                 matchActionCreator.getNearbyMatches(latLng, radiusSeekBar?.progress!!)
             }, 3000)
+        }
+
+        main_location_card_view.setOnClickListener {
+            val builder = PlacePicker.IntentBuilder().setLatLngBounds(LatLngBounds(LatLng(14.424057,120.848934), LatLng(14.7782442,121.1636333)))
+            startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST)
         }
 
         locationMarker.setOnClickListener { onMapReady(mMap!!) }
@@ -172,6 +182,18 @@ class MainActivity : BaseActivity(), OnMapReadyCallback, GoogleApiClient.OnConne
                 })
 
         userActionCreator.preload()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == Activity.RESULT_OK) {
+                val place = PlacePicker.getPlace(this, data)
+                locationAddressTextView.text = place.name
+                mMap?.setOnCameraIdleListener {}
+                mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(place.latLng, 16f))
+                setUpMapCameraIdleListener()
+            }
+        }
     }
 
     private fun setUpMapCameraIdleListener() {
