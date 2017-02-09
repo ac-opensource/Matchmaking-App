@@ -3,6 +3,7 @@ package com.youniversals.playupgo.flux.model
 import com.pixplicity.easyprefs.library.Prefs
 import com.youniversals.playupgo.api.RestApi
 import com.youniversals.playupgo.data.Match
+import com.youniversals.playupgo.data.MatchJson
 import com.youniversals.playupgo.data.User
 import com.youniversals.playupgo.data.UserMatch
 import rx.Observable
@@ -22,8 +23,8 @@ class MatchModel(val restApi: RestApi) {
     }
 
     fun getNearbyMatches(latLng: String, maxDistance: Int): Observable<List<Match>> {
-//        return restApi.nearMatches(latLng, maxDistance)
-        return restApi.nearMatches("0,0", maxDistance)
+        return restApi.nearMatches(latLng, maxDistance)
+//        return restApi.nearMatches("0,0", maxDistance)
     }
 
     fun joinMatch(matchId: Long) : Observable<UserMatch> {
@@ -32,6 +33,12 @@ class MatchModel(val restApi: RestApi) {
             it.copy(user = User(
                     id = Prefs.getLong("userId", 0),
                     username = Prefs.getString("username", "")))
+        }
+    }
+
+    fun createMatch(newMatch: MatchJson): Observable<Match> {
+        return restApi.createMatch(newMatch).flatMap { createdMatch ->
+            joinMatch(createdMatch.id).map { createdMatch }
         }
     }
 

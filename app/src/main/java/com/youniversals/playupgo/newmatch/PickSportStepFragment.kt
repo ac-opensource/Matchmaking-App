@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.pixplicity.easyprefs.library.Prefs
 import com.stepstone.stepper.Step
 import com.stepstone.stepper.VerificationError
 import com.youniversals.playupgo.PlayUpApplication
@@ -60,7 +61,7 @@ class PickSportStepFragment : Fragment(), Step {
 //                val user = userStore.user() ?: return@OnClickListener
                 val match = matchStore.newMatch ?: MatchJson(
 //                        userId = user.userId,
-                        userId = 1,
+                        userId = Prefs.getLong("userId", 0),
                         sportId = data.id,
                         location = null,
                         description = "",

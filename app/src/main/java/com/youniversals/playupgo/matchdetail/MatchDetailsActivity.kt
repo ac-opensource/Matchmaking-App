@@ -65,11 +65,26 @@ class MatchDetailsActivity : BaseActivity() {
         matchDateTextView.text = DateUtils.getRelativeTimeSpanString(match.date, System.currentTimeMillis(), 0)
         matchTitleTextView.text = match.title
         matchDetailsTextView.text = match.description
+
+        Glide.with(this).load(R.drawable.bg_ice)
+                .asGif()
+                .error(R.color.material_color_light_blue_400)
+                .placeholder(R.color.material_color_light_blue_400)
+                .fitCenter()
+                .centerCrop()
+                .into(team1backgroundImageView)
+
+        Glide.with(this).load(R.drawable.bg_fire)
+                .asGif()
+                .error(R.color.material_color_red_400)
+                .placeholder(R.color.material_color_red_400)
+                .fitCenter()
+                .centerCrop()
+                .into(team2backgroundImageView)
         team1params = team1members.getChildAt(0).layoutParams
         team1params2 = team1members.getChildAt(1).layoutParams
         team2params = team2members.getChildAt(0).layoutParams
         team2params2 = team2members.getChildAt(1).layoutParams
-
 
         joinButton.isIndeterminateProgressMode = true
         joinButton.setOnClickListener {
