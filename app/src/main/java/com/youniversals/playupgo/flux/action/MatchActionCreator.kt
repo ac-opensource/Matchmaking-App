@@ -25,6 +25,8 @@ class MatchActionCreator(private val mDispatcher: Dispatcher, private val matchM
         const val ACTION_UPDATE_NEW_MATCH_F = "ACTION_UPDATE_NEW_MATCH_F"
         const val ACTION_JOIN_MATCH_S = "ACTION_JOIN_MATCH_S"
         const val ACTION_JOIN_MATCH_F = "ACTION_JOIN_MATCH_F"
+        const val ACTION_CREATE_MATCH_S = "ACTION_CREATE_MATCH_S"
+        const val ACTION_CREATE_MATCH_F = "ACTION_CREATE_MATCH_F"
     }
     @StringDef(value = *arrayOf(
             ACTION_GET_NEARBY_MATCHES_S,
@@ -34,7 +36,9 @@ class MatchActionCreator(private val mDispatcher: Dispatcher, private val matchM
             ACTION_UPDATE_NEW_MATCH_S,
             ACTION_UPDATE_NEW_MATCH_F,
             ACTION_JOIN_MATCH_S,
-            ACTION_JOIN_MATCH_F))
+            ACTION_JOIN_MATCH_F,
+            ACTION_CREATE_MATCH_S,
+            ACTION_CREATE_MATCH_F))
     @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
     annotation class MatchAction
 
@@ -67,5 +71,14 @@ class MatchActionCreator(private val mDispatcher: Dispatcher, private val matchM
 
     fun updateNewMatch(match: MatchJson) {
         mDispatcher.dispatch(Action(ACTION_UPDATE_NEW_MATCH_S, match))
+    }
+
+    fun createMatch(newMatch: MatchJson) {
+        matchModel.createMatch(newMatch)
+                .subscribe({
+                    mDispatcher.dispatch(Action(ACTION_CREATE_MATCH_S, it))
+                }, {
+                    mDispatcher.dispatch(Action(ACTION_CREATE_MATCH_F, mUtils.getError(it)))
+                })
     }
 }

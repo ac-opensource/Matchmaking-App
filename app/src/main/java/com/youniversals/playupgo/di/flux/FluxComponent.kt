@@ -5,8 +5,7 @@ import com.youniversals.playupgo.login.LoginActivity
 import com.youniversals.playupgo.main.MainActivity
 import com.youniversals.playupgo.main.MatchPickerBottomSheetDialogFragment
 import com.youniversals.playupgo.matchdetail.MatchDetailsActivity
-import com.youniversals.playupgo.newmatch.AddNewMatchActivity
-import com.youniversals.playupgo.newmatch.PickSportStepFragment
+import com.youniversals.playupgo.newmatch.*
 import dagger.Component
 import javax.inject.Singleton
 
@@ -26,5 +25,8 @@ interface FluxComponent {
     fun inject(matchPickerBottomSheetDialogFragment: MatchPickerBottomSheetDialogFragment)
     fun inject(newMatchActivity: AddNewMatchActivity)
     fun inject(pickSportStepFragment: PickSportStepFragment)
+    fun inject(addDetailsStepFragment: AddDetailsStepFragment)
+    fun inject(setDateAndTimeStepFragment: SetDateAndTimeStepFragment)
+    fun inject(setLocationStepFragment: SetLocationStepFragment)
 
 }

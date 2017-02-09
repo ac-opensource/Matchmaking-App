@@ -114,8 +114,8 @@ data class MatchJson(
         val location: Location?,
         val description: String,
         val title: String,
-        val date: Long,
-        val status: String
+        val date: Long = System.currentTimeMillis(),
+        val status: String = "new"
 )
 
 data class UserMatch(

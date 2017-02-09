@@ -13,9 +13,9 @@ class NewMatchStepperAdapter(fm: FragmentManager, context: Context) : AbstractFr
         when (position) {
             0 -> return PickSportStepFragment()
             1 -> return AddDetailsStepFragment()
-            2 -> return AddDetailsStepFragment()
-            3 -> return AddDetailsStepFragment()
-            else -> return AddDetailsStepFragment()
+            2 -> return SetDateAndTimeStepFragment()
+            3 -> return SetLocationStepFragment()
+            else -> return PickSportStepFragment()
         }
     }
 
