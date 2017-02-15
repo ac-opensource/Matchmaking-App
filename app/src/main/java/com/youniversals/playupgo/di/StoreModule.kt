@@ -2,6 +2,7 @@ package com.youniversals.playupgo.di
 
 import com.youniversals.playupgo.flux.Dispatcher
 import com.youniversals.playupgo.flux.store.MatchStore
+import com.youniversals.playupgo.flux.store.NotificationStore
 import com.youniversals.playupgo.flux.store.SportStore
 import com.youniversals.playupgo.flux.store.UserStore
 import dagger.Module
@@ -20,12 +21,13 @@ class StoreModule {
 
     @Singleton
     @Provides
-    fun providesDispatcher(userStore: UserStore, matchStore: MatchStore, sportStore: SportStore): Dispatcher {
+    fun providesDispatcher(userStore: UserStore, matchStore: MatchStore, sportStore: SportStore, notificationStore: NotificationStore): Dispatcher {
         return Dispatcher(
                 Arrays.asList(
                         userStore,
                         matchStore,
-                        sportStore
+                        sportStore,
+                        notificationStore
                 )
         )
     }
@@ -41,9 +43,16 @@ class StoreModule {
     fun providesMatchStore(): MatchStore {
         return MatchStore()
     }
+
     @Singleton
     @Provides
     fun providesSportStore(): SportStore {
         return SportStore()
+    }
+
+    @Singleton
+    @Provides
+    fun providesNotificationStore(): NotificationStore {
+        return NotificationStore()
     }
 }

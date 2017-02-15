@@ -3,9 +3,11 @@ package com.youniversals.playupgo.di
 import com.youniversals.playupgo.flux.Dispatcher
 import com.youniversals.playupgo.flux.Utils
 import com.youniversals.playupgo.flux.action.MatchActionCreator
+import com.youniversals.playupgo.flux.action.NotificationActionCreator
 import com.youniversals.playupgo.flux.action.SportActionCreator
 import com.youniversals.playupgo.flux.action.UserActionCreator
 import com.youniversals.playupgo.flux.model.MatchModel
+import com.youniversals.playupgo.flux.model.NotificationModel
 import com.youniversals.playupgo.flux.model.SportModel
 import com.youniversals.playupgo.flux.model.UserModel
 import dagger.Module
@@ -37,5 +39,12 @@ class ActionCreatorModule {
                                            sportModel: SportModel,
                                            utils: Utils): SportActionCreator {
         return SportActionCreator(dispatcher, sportModel, utils)
+    }
+
+    @Singleton @Provides
+    fun providesNotificationActionCreator(dispatcher: Dispatcher,
+                                           notificationModel: NotificationModel,
+                                           utils: Utils): NotificationActionCreator {
+        return NotificationActionCreator(dispatcher, notificationModel, utils)
     }
 }

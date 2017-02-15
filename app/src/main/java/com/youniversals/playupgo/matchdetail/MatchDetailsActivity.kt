@@ -107,7 +107,7 @@ class MatchDetailsActivity : BaseActivity() {
                                 ACTION_GET_USER_MATCHES_S -> setupMatchPlayersViews(it)
                                 ACTION_JOIN_MATCH_S -> {
                                     joinButton.progress = 100
-                                    setupMatchPlayersViews(it)
+                                    matchActionCreator.getUsersByMatchId(match.id)
 
                                     ShareCompat.IntentBuilder.from(this)
                                             .setChooserTitle("Share")

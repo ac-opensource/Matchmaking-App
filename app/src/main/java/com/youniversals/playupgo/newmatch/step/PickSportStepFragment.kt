@@ -1,4 +1,4 @@
-package com.youniversals.playupgo.newmatch
+package com.youniversals.playupgo.newmatch.step
 
 
 import android.os.Bundle
@@ -21,6 +21,8 @@ import com.youniversals.playupgo.flux.action.SportActionCreator.Companion.ACTION
 import com.youniversals.playupgo.flux.store.MatchStore
 import com.youniversals.playupgo.flux.store.SportStore
 import com.youniversals.playupgo.flux.store.UserStore
+import com.youniversals.playupgo.newmatch.SportView
+import com.youniversals.playupgo.newmatch.SportsAdapter
 import kotlinx.android.synthetic.main.fragment_pick_sport_step.*
 import rx.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
