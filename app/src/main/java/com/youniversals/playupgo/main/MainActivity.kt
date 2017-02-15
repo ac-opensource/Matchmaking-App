@@ -8,6 +8,8 @@ import android.location.Geocoder
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View.*
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
@@ -26,6 +28,8 @@ import com.youniversals.playupgo.flux.BaseActivity
 import com.youniversals.playupgo.flux.action.MatchActionCreator
 import com.youniversals.playupgo.flux.action.UserActionCreator
 import com.youniversals.playupgo.flux.store.MatchStore
+import com.youniversals.playupgo.notifications.NotificationActivity
+import hotchemi.android.rate.AppRate
 import kotlinx.android.synthetic.main.activity_main.*
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
 import rx.Observable
@@ -65,6 +69,17 @@ class MainActivity : BaseActivity(), OnMapReadyCallback, GoogleApiClient.OnConne
         super.onCreate(savedInstanceState)
         PlayUpApplication.fluxComponent.inject(this)
         setContentView(R.layout.activity_main)
+
+        AppRate.with(this)
+                .setInstallDays(0) // default 10, 0 means install day.
+                .setLaunchTimes(3) // default 10
+                .setRemindInterval(1) // default 1
+                .setShowLaterButton(true) // default true
+                .setDebug(false) // default false
+                .monitor()
+
+        // Show a dialog if meets conditions
+        AppRate.showRateDialogIfMeetsConditions(this)
 
         initFlux()
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -108,6 +123,23 @@ class MainActivity : BaseActivity(), OnMapReadyCallback, GoogleApiClient.OnConne
                 radiusTextView.text = ("Search game(s) within: ${seekBar?.progress}km")
             }
         })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle item selection
+        when (item.itemId) {
+            R.id.action_notifications -> {
+                NotificationActivity.startActivity(this)
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
     }
 
     private fun initFlux() {

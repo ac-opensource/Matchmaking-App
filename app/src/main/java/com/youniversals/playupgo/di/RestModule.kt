@@ -24,8 +24,9 @@ class RestModule {
     @Singleton
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
-                .baseUrl("http://10.100.0.91:3000")
+//                .baseUrl("http://10.100.0.91:3000")
 //                .baseUrl("http://172.20.10.11:3000")
+                .baseUrl("http://188.166.180.162:3000")
                 .addConverterFactory(MoshiConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
                 .build()

@@ -35,6 +35,7 @@ class AddNewMatchActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_new_match)
         PlayUpApplication.fluxComponent.inject(this)
+        title = "Create New Match"
         initFlux()
         stepperLayout.setAdapter(NewMatchStepperAdapter(supportFragmentManager, this))
         stepperLayout.setListener(object : StepperLayout.StepperListener {

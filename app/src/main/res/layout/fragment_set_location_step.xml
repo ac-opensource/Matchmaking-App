@@ -10,11 +10,15 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    tools:context="com.youniversals.playupgo.newmatch.SetLocationStepFragment">
+    tools:context="com.youniversals.playupgo.newmatch.step.SetLocationStepFragment">
 
     <Button
         android:id="@+id/setLocationButton"
         android:text="Set play location"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/white"
+        android:paddingLeft="@dimen/material_button_padding_horizontal"
+        android:paddingRight="@dimen/material_button_padding_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/material_baseline_grid_6x"/>
 

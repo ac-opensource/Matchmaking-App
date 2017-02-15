@@ -2,6 +2,7 @@ package com.youniversals.playupgo.di
 
 import com.youniversals.playupgo.api.RestApi
 import com.youniversals.playupgo.flux.model.MatchModel
+import com.youniversals.playupgo.flux.model.NotificationModel
 import com.youniversals.playupgo.flux.model.SportModel
 import com.youniversals.playupgo.flux.model.UserModel
 import dagger.Module
@@ -27,5 +28,11 @@ class ModelModule {
     @Provides
     fun providesSportModel(restApi: RestApi): SportModel {
         return SportModel(restApi)
+    }
+
+    @Singleton
+    @Provides
+    fun providesNotificationModel(restApi: RestApi): NotificationModel {
+        return NotificationModel(restApi)
     }
 }

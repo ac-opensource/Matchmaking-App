@@ -24,6 +24,7 @@ data class AccessToken(
 data class User(
         val id: Long,
         val username: String,
+        val onSignalUserId: String = "",
         val email: String = ""
 )
 
@@ -151,7 +152,7 @@ data class Notification(
         val title: String,
         val message: String,
         val isRead: Boolean,
-        val from: UserIdentity,
+        val fromUserId: Long,
         val date: Long
 )
 

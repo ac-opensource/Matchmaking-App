@@ -5,6 +5,10 @@ import android.support.v4.app.FragmentManager
 import com.stepstone.stepper.Step
 import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter
 import com.stepstone.stepper.viewmodel.StepViewModel
+import com.youniversals.playupgo.newmatch.step.AddDetailsStepFragment
+import com.youniversals.playupgo.newmatch.step.PickSportStepFragment
+import com.youniversals.playupgo.newmatch.step.SetDateAndTimeStepFragment
+import com.youniversals.playupgo.newmatch.step.SetLocationStepFragment
 
 
 class NewMatchStepperAdapter(fm: FragmentManager, context: Context) : AbstractFragmentStepAdapter(fm, context) {
