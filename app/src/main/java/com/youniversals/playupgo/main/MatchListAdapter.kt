@@ -10,11 +10,10 @@ import com.airbnb.epoxy.EpoxyAdapter
 import com.airbnb.epoxy.EpoxyModel
 import com.youniversals.playupgo.R
 import com.youniversals.playupgo.data.Match
+import kotlinx.android.synthetic.main.match_list_view_item.view.*
 
 
 /**
- *
- *
  * YOYO HOLDINGS
  * @author A-Ar Andrew Concepcion
  * @version
@@ -63,6 +62,44 @@ class MatchModel(private val match: Match, private val onClickListener: View.OnC
     override fun unbind(sportView: MatchView?) {
         super.unbind(sportView)
         sportView?.setOnClickListener(null)
+    }
+}
+
+class MatchView(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
+
+    var matchCard: View? = null
+
+    var data: Match? = null
+
+    var title: String? = null
+        set(value) {
+            field = value
+            matchTitleTextView.text = value
+        }
+
+    var distance: String? = null
+        set(value) {
+            field = value
+            distanceTextView.text = value
+        }
+
+    var date: String? = null
+        set(value) {
+            field = value
+            matchDateTextView.text = value
+        }
+
+    init {
+        init()
+    }
+
+    private fun init() {
+        orientation = LinearLayout.VERTICAL
+        View.inflate(context, R.layout.match_list_view_item, this)
+        matchCard = matchCardView
+    }
+
+    fun clear() {
     }
 }
 

@@ -41,9 +41,12 @@
             <de.hdodenhof.circleimageview.CircleImageView
                 app:civ_border_color="@color/white"
                 app:civ_border_width="4dp"
+                tools:src="@color/webLightGreen"
                 android:layout_width="@dimen/material_increment_1x"
                 android:layout_height="@dimen/material_increment_1x" />
             <de.hdodenhof.circleimageview.CircleImageView
+                app:civ_border_color="@color/white"
+                app:civ_border_width="4dp"
                 tools:src="@color/webLightGreen"
                 style="@style/TeamMemberStyle" />
             <de.hdodenhof.circleimageview.CircleImageView
@@ -145,6 +148,7 @@
         android:layout_width="match_parent"
         app:cpb_textIdle="Join Game"
         app:cpb_textComplete="Joined!"
+        app:cpb_selectorIdle="@drawable/selector_idle_cpb"
         android:layout_marginTop="@dimen/material_baseline_grid_1x"
         android:layout_height="@dimen/material_increment_1x" />
 
