@@ -19,4 +19,8 @@ class SportModel(restApi: RestApi) {
         return mRestApi.getSports()
     }
 
+    fun getSport(id: Long): Observable<Sport> {
+        return mRestApi.getSport(id)
+    }
+
 }

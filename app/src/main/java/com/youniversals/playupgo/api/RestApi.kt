@@ -1,10 +1,7 @@
 package com.youniversals.playupgo.api
 
 import com.youniversals.playupgo.data.*
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 import rx.Observable
 
 /**
@@ -31,6 +28,10 @@ interface RestApi {
     @GET("/api/sports")
     fun getSports(): Observable<List<Sport>>
 
+    @GET("/api/sports/{id}")
+    fun getSport(@Path("id") id: Long): Observable<Sport>
+
+
     @POST("/api/userMatches")
     fun joinMatch(@Body userMatch: UserMatch): Observable<UserMatch>
 
@@ -45,4 +46,5 @@ interface RestApi {
     //localhost:3000/api/UserMatches?filter={"where":{"matchId": 4}, "include":[{"relation": "user"}]}
     @GET("/api/userMatches")
     fun getUsersByMatchId(@Query("filter", encoded = true) filter: String): Observable<List<UserMatch>>
+
 }

@@ -14,9 +14,9 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
     <style name="Divider">
         <item name="android:layout_width">match_parent</item>
@@ -25,7 +25,7 @@
     </style>
 
     <style name="TeamMemberStyle" parent="">
-        <item name="android:layout_marginLeft">-20dp</item>
+        <item name="android:layout_marginLeft">-10dp</item>
         <item name="android:layout_width">@dimen/material_increment_1x</item>
         <item name="android:layout_height">@dimen/material_increment_1x</item>
     </style>

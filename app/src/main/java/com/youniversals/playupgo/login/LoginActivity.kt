@@ -31,7 +31,11 @@ class LoginActivity : BaseActivity() {
         initialize()
         setContentView(R.layout.activity_login)
         if (isLoggedIn()) {
-            MainActivity.startActivity(this)
+            if (Prefs.getLong("userId", 0) != 0L) {
+                MainActivity.startActivity(this)
+            } else {
+                userActionCreator.login(com.facebook.AccessToken.getCurrentAccessToken().token)
+            }
         }
         initFacebookLogin()
     }

@@ -8,7 +8,6 @@
     android:layout_height="match_parent"
     tools:context="com.youniversals.playupgo.main.MainActivity" >
 
-
     <!-- main content layout-->
     <FrameLayout
         android:layout_width="match_parent"
@@ -183,10 +182,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/material_bottom_sheet_grid_row_height"
                 android:layout_below="@+id/more" />
-
         </RelativeLayout>
-
-
     </RelativeLayout>
-
 </android.support.design.widget.CoordinatorLayout>

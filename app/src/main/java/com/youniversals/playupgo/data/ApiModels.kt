@@ -81,11 +81,12 @@ data class Match(
         val userId: Long = 0,
         val sportId: Long = 0,
         val location: Location? = null,
+        val locationName: String = "",
         val description: String = "",
         val title: String = "",
         val date: Long = 0,
         val status: String = ""
-) : Parcelable {
+) : Parcelable{
     companion object {
         @JvmField val CREATOR: Parcelable.Creator<Match> = object : Parcelable.Creator<Match> {
             override fun createFromParcel(source: Parcel): Match = Match(source)
@@ -93,7 +94,7 @@ data class Match(
         }
     }
 
-    constructor(source: Parcel) : this(source.readLong(), source.readLong(), source.readLong(), source.readParcelable<Location>(Location::class.java.classLoader), source.readString(), source.readString(), source.readLong(), source.readString())
+    constructor(source: Parcel) : this(source.readLong(), source.readLong(), source.readLong(), source.readParcelable<Location?>(Location::class.java.classLoader), source.readString(), source.readString(), source.readString(), source.readLong(), source.readString())
 
     override fun describeContents() = 0
 
@@ -101,7 +102,8 @@ data class Match(
         dest?.writeLong(id)
         dest?.writeLong(userId)
         dest?.writeLong(sportId)
-        dest?.writeParcelable(location, flags)
+        dest?.writeParcelable(location, 0)
+        dest?.writeString(locationName)
         dest?.writeString(description)
         dest?.writeString(title)
         dest?.writeLong(date)
@@ -113,6 +115,7 @@ data class MatchJson(
         val userId: Long,
         val sportId: Long,
         val location: Location?,
+        val locationName: String,
         val description: String,
         val title: String,
         val date: Long = System.currentTimeMillis(),
