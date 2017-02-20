@@ -62,7 +62,7 @@ class SetLocationStepFragment : Fragment(), Step {
                 val toastMsg = String.format("Place: %s", place.name)
                 val url = createStaticMapUrl("${place.latLng.latitude},${place.latLng.longitude}", 18)
                 Glide.with(this).load(url).fitCenter().centerCrop().into(staticMap)
-                matchActionCreator.updateNewMatch(matchStore.newMatch!!.copy(location = Location(place.latLng.latitude, place.latLng.longitude)))
+                matchActionCreator.updateNewMatch(matchStore.newMatch!!.copy(location = Location(place.latLng.latitude, place.latLng.longitude), locationName = "${place.name}"))
                 Toast.makeText(context, toastMsg, Toast.LENGTH_LONG).show()
             }
         }

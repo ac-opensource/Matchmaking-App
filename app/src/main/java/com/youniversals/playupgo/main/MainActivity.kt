@@ -176,42 +176,44 @@ class MainActivity : BaseActivity(), OnMapReadyCallback, GoogleApiClient.OnConne
      */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        if (isFinishing) return
-        RxPermissions(this).request(Manifest.permission.ACCESS_FINE_LOCATION)
-                .subscribe ({
-                    if (it) { // Always true pre-M
-                        val result = Places.PlaceDetectionApi.getCurrentPlace(mGoogleApiClient, null)
-                        result.setResultCallback { likelyPlaces ->
-                            var lastLikelyhood = 0
-                            var mostLikelyPlace = ""
-                            var mostLikelyCoordinate: LatLng = LatLng(14.6091, 121.0223)
-                            Observable.from(likelyPlaces)
+        if (isFinishing || isDestroyed) return
+        addSubscriptionToUnsubscribe(
+                RxPermissions(this).request(Manifest.permission.ACCESS_FINE_LOCATION)
+                        .subscribe ({
+                            if (it) { // Always true pre-M
+                                val result = Places.PlaceDetectionApi.getCurrentPlace(mGoogleApiClient, null)
+                                result.setResultCallback { likelyPlaces ->
+                                    var lastLikelyhood = 0
+                                    var mostLikelyPlace = ""
+                                    var mostLikelyCoordinate: LatLng = LatLng(14.6091, 121.0223)
+                                    Observable.from(likelyPlaces)
 
-                            for (placeLikelihood in likelyPlaces) {
-                                Log.i("MainActivity", String.format("Place '%s' has likelihood: %g",
-                                        placeLikelihood.place.name,
-                                        placeLikelihood.likelihood))
+                                    for (placeLikelihood in likelyPlaces) {
+                                        Log.i("MainActivity", String.format("Place '%s' has likelihood: %g",
+                                                placeLikelihood.place.name,
+                                                placeLikelihood.likelihood))
 
-                                if (placeLikelihood.likelihood >= lastLikelyhood) {
-                                    mostLikelyPlace = placeLikelihood.place.name.toString()
-                                    mostLikelyCoordinate = placeLikelihood.place.latLng
+                                        if (placeLikelihood.likelihood >= lastLikelyhood) {
+                                            mostLikelyPlace = placeLikelihood.place.name.toString()
+                                            mostLikelyCoordinate = placeLikelihood.place.latLng
+                                        }
+                                    }
+                                    locationAddressTextView.text = mostLikelyPlace
+                                    mMap?.setOnCameraIdleListener {}
+                                    mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(mostLikelyCoordinate, 16f))
+                                    setUpMapCameraIdleListener()
+                                    likelyPlaces.release()
                                 }
+                            } else {
+                                // Oups permission denied
+                                // Add a marker in Sydney and move the camera
+                                val metroManila = LatLng(14.6091, 121.0223)
+                                mMap?.setOnCameraIdleListener {}
+                                mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(metroManila, 14f))
+                                setUpMapCameraIdleListener()
                             }
-                            locationAddressTextView.text = mostLikelyPlace
-                            mMap?.setOnCameraIdleListener {}
-                            mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(mostLikelyCoordinate, 16f))
-                            setUpMapCameraIdleListener()
-                            likelyPlaces.release()
-                        }
-                    } else {
-                        // Oups permission denied
-                        // Add a marker in Sydney and move the camera
-                        val metroManila = LatLng(14.6091, 121.0223)
-                        mMap?.setOnCameraIdleListener {}
-                        mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(metroManila, 14f))
-                        setUpMapCameraIdleListener()
-                    }
-                })
+                        })
+        )
 
         userActionCreator.preload()
     }

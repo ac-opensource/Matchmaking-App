@@ -6,6 +6,7 @@ import com.youniversals.playupgo.flux.AppError
 import com.youniversals.playupgo.flux.Store
 import com.youniversals.playupgo.flux.action.SportActionCreator
 import com.youniversals.playupgo.flux.action.SportActionCreator.Companion.ACTION_GET_SPORTS_S
+import com.youniversals.playupgo.flux.action.SportActionCreator.Companion.ACTION_GET_SPORT_BY_ID_S
 import rx.Observable
 
 /**
@@ -31,7 +32,7 @@ class SportStore : Store<SportStore>() {
 
     override fun onReceiveAction(action: Action) {
         when (action.type) {
-            ACTION_GET_SPORTS_S -> {
+            ACTION_GET_SPORTS_S, ACTION_GET_SPORT_BY_ID_S -> {
                 updateState()
                 updateData(action)
                 updateError(action)
@@ -50,6 +51,8 @@ class SportStore : Store<SportStore>() {
         action.data ?: return
         if (action.data is List<*> && action.data.size > 0) {
             if (action.data[0] is Sport) sports = action.data as List<Sport>?
+        } else if (action.data is Sport) {
+            sports = listOf(action.data)
         }
     }
 

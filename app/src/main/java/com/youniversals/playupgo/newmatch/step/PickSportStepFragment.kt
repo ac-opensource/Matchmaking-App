@@ -66,6 +66,7 @@ class PickSportStepFragment : Fragment(), Step {
                         userId = Prefs.getLong("userId", 0),
                         sportId = data.id,
                         location = null,
+                        locationName = "",
                         description = "",
                         title = "",
                         date = 0,

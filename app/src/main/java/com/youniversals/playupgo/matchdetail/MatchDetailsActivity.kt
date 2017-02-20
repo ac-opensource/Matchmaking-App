@@ -7,8 +7,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.ShareCompat
-import android.support.v7.widget.Toolbar
-import android.text.format.DateUtils
+import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -22,16 +21,25 @@ import com.youniversals.playupgo.flux.action.MatchActionCreator
 import com.youniversals.playupgo.flux.action.MatchActionCreator.Companion.ACTION_GET_USER_MATCHES_S
 import com.youniversals.playupgo.flux.action.MatchActionCreator.Companion.ACTION_JOIN_MATCH_F
 import com.youniversals.playupgo.flux.action.MatchActionCreator.Companion.ACTION_JOIN_MATCH_S
+import com.youniversals.playupgo.flux.action.SportActionCreator
+import com.youniversals.playupgo.flux.action.SportActionCreator.Companion.ACTION_GET_SPORT_BY_ID_S
 import com.youniversals.playupgo.flux.store.MatchStore
+import com.youniversals.playupgo.flux.store.SportStore
 import com.youniversals.playupgo.util.SocialUtils
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.android.synthetic.main.activity_match_details.*
 import kotlinx.android.synthetic.main.content_match_details.*
+import kotlinx.android.synthetic.main.part_match_details.*
 import rx.android.schedulers.AndroidSchedulers
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 class MatchDetailsActivity : BaseActivity() {
     @Inject lateinit var matchActionCreator: MatchActionCreator
     @Inject lateinit var matchStore: MatchStore
+    @Inject lateinit var sportActionCreator: SportActionCreator
+    @Inject lateinit var sportStore: SportStore
 
     lateinit private var match: Match
     lateinit var team1params: ViewGroup.LayoutParams
@@ -56,13 +64,24 @@ class MatchDetailsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         PlayUpApplication.fluxComponent.inject(this)
         setContentView(R.layout.activity_match_details)
-        val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
 
+        supportActionBar?.let {
+            it.setDisplayHomeAsUpEnabled(true)
+            it.setDisplayShowHomeEnabled(true)
+            toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_arrow_back_white_24dp)
+            toolbar.setNavigationOnClickListener {
+                finish()
+            }
+        }
         initFlux()
 
         match = intent.getParcelableExtra<Match>(EXTRA_MATCH)
-        matchDateTextView.text = DateUtils.getRelativeTimeSpanString(match.date, System.currentTimeMillis(), 0)
+        val matchDateCal = Calendar.getInstance()
+        matchDateCal.timeInMillis = match.date
+        timeTextView.text = SimpleDateFormat("h:mm a", Locale.getDefault()).format(matchDateCal.time)
+        dateTextView.text = SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault()).format(matchDateCal.time)
+        locationNameTextView.text = match.locationName
         matchTitleTextView.text = match.title
         matchDetailsTextView.text = match.description
 
@@ -94,8 +113,8 @@ class MatchDetailsActivity : BaseActivity() {
             }
 
         }
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         matchActionCreator.getUsersByMatchId(match.id)
+        sportActionCreator.getSport(match.sportId)
     }
 
     private fun initFlux() {
@@ -111,13 +130,26 @@ class MatchDetailsActivity : BaseActivity() {
 
                                     ShareCompat.IntentBuilder.from(this)
                                             .setChooserTitle("Share")
-                                            .setSubject("I joined a Play")
+                                            .setSubject("I joined a ${whatToDoTextView.text ?: "sports"} game")
                                             .setText("I'm playing near here: http://maps.google.com?q=${match.location?.lat},${match.location?.lng}, you can play with me by using PlayUpGo (PlayStore link)")
-                                            .setText("You can play with me by using PlayUpGo (PlayStore link)")
+                                            .setText("Let's play ${whatToDoTextView.text ?: "sports"}! You can play with me by using PlayUpGo https://play.google.com/store/apps/details?id=com.youniversals.playupgo")
                                             .setType("text/plain")
                                             .startChooser()
                                 }
                                 ACTION_JOIN_MATCH_F -> joinButton.progress = 0
+                            }
+                        }, {
+                            Log.e("A-ar", it.message, it)
+                        })
+        )
+
+        addSubscriptionToUnsubscribe(
+                sportStore.observableWithFilter(ACTION_GET_SPORT_BY_ID_S)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({
+                            if (it.error != null) return@subscribe
+                            it.sports?.let {
+                                whatToDoTextView.text = it[0].name
                             }
                         }, {
                             Log.e("A-ar", it.message, it)
@@ -130,7 +162,7 @@ class MatchDetailsActivity : BaseActivity() {
         team2members.removeAllViews()
         playersJoinedTextView.text = "${it.usersByMatch?.size}/10"
         it.usersByMatch?.forEach {
-//            if (it.userId == 1L) {
+            //            if (it.userId == 1L) {
 //                joinButton.progress = 100
 //            }
             addImageForPlayer(it)
