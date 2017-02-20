@@ -19,7 +19,7 @@ import rx.Observable
 class MatchModel(val restApi: RestApi) {
 
     fun getUsersByMatchId(matchId: Long): Observable<List<UserMatch>> {
-        val filterString = """{"where":{"matchId": $matchId}, "include":[{"relation": "user", "scope": {"include": [ "identities" ]}}] }"""
+        val filterString = """{"where":{"matchId": $matchId}, "include":[{"relation": "user"}]}"""
         return restApi.getUsersByMatchId(filterString)
     }
 

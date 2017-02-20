@@ -16,8 +16,10 @@ class SportActionCreator(private val mDispatcher: Dispatcher, private val mSport
     companion object {
         const val ACTION_GET_SPORTS_S = "ACTION_GET_SPORTS_S"
         const val ACTION_GET_SPORTS_F = "ACTION_GET_SPORTS_F"
+        const val ACTION_GET_SPORT_BY_ID_S = "ACTION_GET_SPORT_BY_ID_S"
+        const val ACTION_GET_SPORT_BY_ID_F = "ACTION_GET_SPORT_BY_ID_F"
     }
-    @StringDef(value = *arrayOf(ACTION_GET_SPORTS_S, ACTION_GET_SPORTS_F))
+    @StringDef(value = *arrayOf(ACTION_GET_SPORTS_S, ACTION_GET_SPORTS_F, ACTION_GET_SPORT_BY_ID_S, ACTION_GET_SPORT_BY_ID_F))
     @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
     annotation class SportAction
 
@@ -27,6 +29,15 @@ class SportActionCreator(private val mDispatcher: Dispatcher, private val mSport
                     mDispatcher.dispatch(Action(ACTION_GET_SPORTS_S, sports))
                 }, { throwable ->
                     mDispatcher.dispatch(Action(ACTION_GET_SPORTS_F, mUtils.getError(throwable)))
+                })
+    }
+
+    fun getSport(id: Long) {
+        mSportModel.getSport(id)
+                .subscribe({ sport ->
+                    mDispatcher.dispatch(Action(ACTION_GET_SPORT_BY_ID_S, sport))
+                }, { throwable ->
+                    mDispatcher.dispatch(Action(ACTION_GET_SPORT_BY_ID_F, mUtils.getError(throwable)))
                 })
     }
 }
