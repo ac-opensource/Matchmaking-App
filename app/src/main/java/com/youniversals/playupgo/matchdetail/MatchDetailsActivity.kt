@@ -4,7 +4,10 @@ package com.youniversals.playupgo.matchdetail
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.CalendarContract
+import android.provider.CalendarContract.Events
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.ShareCompat
 import android.support.v4.content.ContextCompat
@@ -34,6 +37,8 @@ import rx.android.schedulers.AndroidSchedulers
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
+
+
 
 class MatchDetailsActivity : BaseActivity() {
     @Inject lateinit var matchActionCreator: MatchActionCreator
@@ -105,6 +110,8 @@ class MatchDetailsActivity : BaseActivity() {
         team2params = team2members.getChildAt(0).layoutParams
         team2params2 = team2members.getChildAt(1).layoutParams
 
+        seeLocationTextView.setOnClickListener { viewOnMap() }
+        setCalendarEventTextView.setOnClickListener { setCalendarEvent() }
         joinButton.isIndeterminateProgressMode = true
         joinButton.setOnClickListener {
             if (joinButton.progress != 100) {
@@ -115,6 +122,32 @@ class MatchDetailsActivity : BaseActivity() {
         }
         matchActionCreator.getUsersByMatchId(match.id)
         sportActionCreator.getSport(match.sportId)
+    }
+
+    private fun setCalendarEvent() {
+        val matchStart = Calendar.getInstance()
+        matchStart.timeInMillis = match.date
+        val matchEnd = Calendar.getInstance()
+        matchEnd.timeInMillis = match.date
+        matchEnd.add(Calendar.HOUR, 1)
+        val intent = Intent(Intent.ACTION_INSERT)
+                .setData(Events.CONTENT_URI)
+                .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, matchStart.timeInMillis)
+                .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, matchEnd.timeInMillis)
+                .putExtra(Events.TITLE, match.title)
+                .putExtra(Events.DESCRIPTION, match.description)
+                .putExtra(Events.EVENT_LOCATION, match.locationName)
+                .putExtra(Events.AVAILABILITY, Events.AVAILABILITY_BUSY)
+        startActivity(intent)
+    }
+
+    private fun viewOnMap() {
+        val uri = "http://maps.google.com/maps?q=loc:${match.location?.lat},${match.location?.lng} (${match.locationName})"
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+        intent.flags = Intent.FLAG_ACTIVITY_FORWARD_RESULT
+        intent.flags = Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP
+        intent.data = Uri.parse(uri)
+        startActivity(intent)
     }
 
     private fun initFlux() {

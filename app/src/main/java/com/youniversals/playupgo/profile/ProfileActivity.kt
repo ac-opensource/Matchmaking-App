@@ -13,9 +13,6 @@ import com.youniversals.playupgo.R
 import com.youniversals.playupgo.flux.BaseActivity
 import kotlinx.android.synthetic.main.activity_profile.*
 
-
-
-
 class ProfileActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,6 +48,8 @@ class ProfileActivity : BaseActivity() {
 //                }
 //            }
 //        })
+
+
         val profileId = 10208575991616235
         Glide.with(this)
                 .load("http://graph.facebook.com/v2.2/$profileId/picture?type=large")
