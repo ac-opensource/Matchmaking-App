@@ -1,6 +1,7 @@
 # Matchmaking-App
 
 Please support me by testing the app: https://play.google.com/store/apps/details?id=com.youniversals.playupgo
+<a href='https://play.google.com/store/apps/details?id=com.youniversals.playupgo&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
 
 [![Play Up BETA](http://i.imgur.com/030dYjJ.png)](https://youtu.be/YQDmoY-J5PQ "Play Up BETA Demo")
 
