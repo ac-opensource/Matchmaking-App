@@ -2,6 +2,8 @@
 
 Please support me by testing the app: https://play.google.com/store/apps/details?id=com.youniversals.playupgo
 
+[![Play Up BETA](http://i.imgur.com/030dYjJ.png)](https://youtu.be/YQDmoY-J5PQ "Play Up BETA Demo")
+
 ## For Players
 Imagine you're a regular sport player, no funds, no chance of getting into the big leagues? What if you have proof of your games? You build a profile that no one can dispute? You play games and your scores are recorded. This will be your platform.
 
