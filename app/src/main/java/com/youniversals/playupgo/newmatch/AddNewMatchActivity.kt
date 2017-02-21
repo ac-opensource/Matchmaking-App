@@ -31,6 +31,9 @@ class AddNewMatchActivity : BaseActivity() {
         }
 
     }
+
+    private var completeButtonView: View? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_new_match)
@@ -48,6 +51,8 @@ class AddNewMatchActivity : BaseActivity() {
             }
 
             override fun onCompleted(completeButton: View?) {
+                completeButtonView = completeButton
+                completeButtonView?.isEnabled = false
                 matchActionCreator.createMatch(matchStore.newMatch!!)
             }
 
@@ -65,7 +70,10 @@ class AddNewMatchActivity : BaseActivity() {
                         }
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe {
-                            if (it.error != null) return@subscribe
+                            if (it.error != null) {
+                                completeButtonView?.isEnabled = true
+                                return@subscribe
+                            }
                             finish()
                         }
         )

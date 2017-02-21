@@ -79,6 +79,18 @@
                 android:layout_alignBottom="@id/dateIconImageView"
                 style="@style/matchDetailsPart" />
 
+            <TextView
+                android:id="@+id/setCalendarEventTextView"
+                android:text="add to calendar"
+                android:textColor="@color/linkBlue"
+                android:layout_alignTop="@id/dateIconImageView"
+                android:layout_alignParentRight="true"
+                android:minHeight="@dimen/material_list_icon_size"
+                style="@style/matchDetailsPart"
+                android:gravity="right|center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
             <ImageView
                 android:id="@+id/locationIconImageView"
                 android:layout_marginTop="@dimen/material_baseline_grid_1x"
@@ -92,16 +104,31 @@
                 tools:text="Taguig City"
                 android:layout_below="@id/matchTitleTextView"
                 android:layout_toRightOf="@id/locationIconImageView"
+                android:layout_marginRight="@dimen/material_baseline_grid_10x"
+                android:layout_width="match_parent"
                 android:layout_marginLeft="@dimen/material_baseline_grid_1x"
+                android:lineSpacingMultiplier="1"
+                android:minHeight="@dimen/material_list_icon_size"
                 android:layout_alignTop="@id/locationIconImageView"
-                android:layout_alignBottom="@id/locationIconImageView"
                 style="@style/matchDetailsPart" />
+
+            <TextView
+                android:id="@+id/seeLocationTextView"
+                android:text="see location"
+                android:textColor="@color/linkBlue"
+                android:layout_alignTop="@id/locationIconImageView"
+                android:layout_alignParentRight="true"
+                android:minHeight="@dimen/material_list_icon_size"
+                style="@style/matchDetailsPart"
+                android:gravity="right|center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
             <ImageView
                 android:id="@+id/whatToDoImageView"
                 android:layout_marginTop="@dimen/material_baseline_grid_1x"
                 android:src="@drawable/ic_whatshot_black_24dp"
-                android:layout_below="@+id/locationIconImageView"
+                android:layout_below="@+id/locationNameTextView"
                 android:layout_width="@dimen/material_list_icon_size"
                 android:layout_height="@dimen/material_list_icon_size"/>
 

@@ -1,11 +1,13 @@
 package com.youniversals.playupgo.newmatch.step
 
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.stepstone.stepper.Step
 import com.stepstone.stepper.VerificationError
@@ -16,6 +18,7 @@ import com.youniversals.playupgo.flux.store.MatchStore
 import kotlinx.android.synthetic.main.fragment_set_date_and_time_step.*
 import java.util.*
 import javax.inject.Inject
+
 
 /**
  * A simple [Fragment] subclass.
@@ -38,7 +41,13 @@ class SetDateAndTimeStepFragment : Fragment(), Step {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.LOLLIPOP) {
+            timePicker.hour = 17
+            timePicker.minute = 0
+        } else {
+            timePicker.currentHour = 17
+            timePicker.currentMinute = 0
+        }
     }
 
     override fun verifyStep(): VerificationError? {
@@ -48,10 +57,10 @@ class SetDateAndTimeStepFragment : Fragment(), Step {
         gameDate.set(Calendar.MONTH, datePicker.month)
         gameDate.set(Calendar.YEAR, datePicker.year)
 
-        var hour = 0
+        var hour = 17
         var min = 0
 
-        if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.LOLLIPOP_MR1) {
+        if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.LOLLIPOP) {
             hour = timePicker.hour
             min = timePicker.minute
         } else {
@@ -70,6 +79,8 @@ class SetDateAndTimeStepFragment : Fragment(), Step {
 
     override fun onSelected() {
         //update UI when selected
+        (activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+                .hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
     override fun onError(error: VerificationError) {
