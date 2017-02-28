@@ -15,12 +15,16 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.pixplicity.easyprefs.library.Prefs
+import com.yarolegovich.lovelydialog.LovelyChoiceDialog
 import com.youniversals.playupgo.PlayUpApplication
 import com.youniversals.playupgo.R
 import com.youniversals.playupgo.data.Match
 import com.youniversals.playupgo.data.UserMatch
 import com.youniversals.playupgo.flux.BaseActivity
 import com.youniversals.playupgo.flux.action.MatchActionCreator
+import com.youniversals.playupgo.flux.action.MatchActionCreator.Companion.ACTION_ACCEPT_JOIN_MATCH_S
 import com.youniversals.playupgo.flux.action.MatchActionCreator.Companion.ACTION_GET_USER_MATCHES_S
 import com.youniversals.playupgo.flux.action.MatchActionCreator.Companion.ACTION_JOIN_MATCH_F
 import com.youniversals.playupgo.flux.action.MatchActionCreator.Companion.ACTION_JOIN_MATCH_S
@@ -28,7 +32,7 @@ import com.youniversals.playupgo.flux.action.SportActionCreator
 import com.youniversals.playupgo.flux.action.SportActionCreator.Companion.ACTION_GET_SPORT_BY_ID_S
 import com.youniversals.playupgo.flux.store.MatchStore
 import com.youniversals.playupgo.flux.store.SportStore
-import com.youniversals.playupgo.util.SocialUtils
+import com.youniversals.playupgo.profile.ProfileActivity
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_match_details.*
 import kotlinx.android.synthetic.main.content_match_details.*
@@ -53,7 +57,6 @@ class MatchDetailsActivity : BaseActivity() {
     lateinit var team2params2: ViewGroup.LayoutParams
 
     companion object {
-
         private val EXTRA_MATCH = "EXTRA_MATCH"
         fun startActivity(context: Context, match: Match, sharedMatchCardView: View) {
             val intent = Intent(context, MatchDetailsActivity::class.java)
@@ -62,7 +65,6 @@ class MatchDetailsActivity : BaseActivity() {
             val options = ActivityOptionsCompat.makeSceneTransitionAnimation(context as Activity, sharedMatchCardView as View, "match")
             context.startActivity(intent, options.toBundle())
         }
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -116,6 +118,11 @@ class MatchDetailsActivity : BaseActivity() {
         joinButton.setOnClickListener {
             if (joinButton.progress != 100) {
                 joinButton.progress = 1
+                val bundle = Bundle()
+                bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "match")
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, match.title)
+                bundle.putString(FirebaseAnalytics.Param.LOCATION, match.locationName)
+                FirebaseAnalytics.getInstance(this).logEvent("join_match", bundle)
                 matchActionCreator.joinMatch(match.id)
             }
 
@@ -151,29 +158,30 @@ class MatchDetailsActivity : BaseActivity() {
     }
 
     private fun initFlux() {
-        addSubscriptionToUnsubscribe(
-                matchStore.observable()
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe({
-                            when (it.action) {
-                                ACTION_GET_USER_MATCHES_S -> setupMatchPlayersViews(it)
-                                ACTION_JOIN_MATCH_S -> {
-                                    joinButton.progress = 100
-                                    matchActionCreator.getUsersByMatchId(match.id)
-
-                                    ShareCompat.IntentBuilder.from(this)
-                                            .setChooserTitle("Share")
-                                            .setSubject("I joined a ${whatToDoTextView.text ?: "sports"} game")
-                                            .setText("I'm playing near here: http://maps.google.com?q=${match.location?.lat},${match.location?.lng}, you can play with me by using PlayUpGo (PlayStore link)")
-                                            .setText("Let's play ${whatToDoTextView.text ?: "sports"}! You can play with me by using PlayUpGo https://play.google.com/store/apps/details?id=com.youniversals.playupgo")
-                                            .setType("text/plain")
-                                            .startChooser()
-                                }
-                                ACTION_JOIN_MATCH_F -> joinButton.progress = 0
-                            }
-                        }, {
-                            Log.e("A-ar", it.message, it)
-                        })
+        addSubscriptionToUnsubscribe(matchStore.observable()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    when (it.action) {
+                        ACTION_GET_USER_MATCHES_S -> setupMatchPlayersViews(it)
+                        ACTION_JOIN_MATCH_S -> {
+                            joinButton.progress = 100
+                            matchActionCreator.getUsersByMatchId(match.id)
+                            ShareCompat.IntentBuilder.from(this)
+                                    .setChooserTitle("Share")
+                                    .setSubject("I joined a ${whatToDoTextView.text ?: "sports"} game")
+                                    .setText("I'm playing near here: http://maps.google.com?q=${match.location?.lat},${match.location?.lng}, you can play with me by using PlayUpGo (PlayStore link)")
+                                    .setText("Let's play ${whatToDoTextView.text ?: "sports"}! You can play with me by using PlayUpGo https://play.google.com/store/apps/details?id=com.youniversals.playupgo")
+                                    .setType("text/plain")
+                                    .startChooser()
+                        }
+                        ACTION_ACCEPT_JOIN_MATCH_S -> {
+                            matchActionCreator.getUsersByMatchId(match.id)
+                        }
+                        ACTION_JOIN_MATCH_F -> joinButton.progress = 0
+                    }
+                }, {
+                    Log.e("A-ar", it.message, it)
+                })
         )
 
         addSubscriptionToUnsubscribe(
@@ -190,15 +198,35 @@ class MatchDetailsActivity : BaseActivity() {
         )
     }
 
+    fun showContextDialog(userMatch: UserMatch, profileId: String) {
+        val adapter = ProfileClickActionsAdapter(this, listOf("Accept Request", "View Profile"))
+        LovelyChoiceDialog(this)
+                .setTopColorRes(R.color.material_color_indigo_900)
+                .setTitle("Accept Request?")
+//                .setIcon(R.drawable.ic_local_atm_white_36dp)
+                .setMessage("When you accept a request, it moves the match request for the player from pending to the match players.")
+                .setItems(adapter) { position, item ->
+                    when (position) {
+                        0 -> matchActionCreator.acceptJoinMatch(userMatch)
+                        1 -> ProfileActivity.startActivity(this, profileId)
+                    }
+                }
+                .show()
+    }
+
     private fun setupMatchPlayersViews(it: MatchStore) {
+        pendingJoinsList.removeAllViews()
         team1members.removeAllViews()
         team2members.removeAllViews()
         playersJoinedTextView.text = "${it.usersByMatch?.size}/10"
         it.usersByMatch?.forEach {
-            //            if (it.userId == 1L) {
-//                joinButton.progress = 100
-//            }
+            if (it.userId == Prefs.getLong("userId", -1)) {
+                joinButton.progress = 100
+            }
             addImageForPlayer(it)
+        }
+        pendingJoinsList.getChildAt(0)?.let { child ->
+            child.layoutParams = team1params
         }
         team1members.getChildAt(0)?.let { child ->
             child.layoutParams = team1params
@@ -208,19 +236,23 @@ class MatchDetailsActivity : BaseActivity() {
         }
     }
 
-    private fun addImageForPlayer(it: UserMatch) {
+    private fun addImageForPlayer(userMatch: UserMatch) {
         val circleImageView = CircleImageView(this, null, R.style.TeamMemberStyle)
-        val profileId = it.user!!.username.replace("facebook.", "")
+        val profileId = userMatch.user!!.username.replace("facebook.", "")
         circleImageView.setOnClickListener {
-            SocialUtils.viewFacebookProfile(this, profileId)
+            if (Prefs.getLong("userId", -1) == match.userId && userMatch.group == 0L) {
+                showContextDialog(userMatch, profileId)
+            } else {
+                ProfileActivity.startActivity(this, profileId)
+            }
         }
 
-        circleImageView.layoutParams = if (it.group == 1L) team1params2 else team2params2
+        circleImageView.layoutParams = if (userMatch.group == 1L || userMatch.group == 0L) team1params2 else team2params2
         Glide.with(this).load("http://graph.facebook.com/v2.2/$profileId/picture").into(circleImageView)
-        if (it.group == 1L) {
-            team1members.addView(circleImageView)
-        } else {
-            team2members.addView(circleImageView)
+        when (userMatch.group) {
+            0L -> pendingJoinsList.addView(circleImageView)
+            1L -> team1members.addView(circleImageView)
+            2L -> team2members.addView(circleImageView)
         }
     }
 

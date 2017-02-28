@@ -11,6 +11,7 @@ import com.youniversals.playupgo.newmatch.step.PickSportStepFragment
 import com.youniversals.playupgo.newmatch.step.SetDateAndTimeStepFragment
 import com.youniversals.playupgo.newmatch.step.SetLocationStepFragment
 import com.youniversals.playupgo.notifications.NotificationActivity
+import com.youniversals.playupgo.profile.ProfileActivity
 import dagger.Component
 import javax.inject.Singleton
 
@@ -34,5 +35,6 @@ interface FluxComponent {
     fun inject(setDateAndTimeStepFragment: SetDateAndTimeStepFragment)
     fun inject(setLocationStepFragment: SetLocationStepFragment)
     fun inject(notificationActivity: NotificationActivity)
+    fun inject(profileActivity: ProfileActivity)
 
 }

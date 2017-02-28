@@ -6,21 +6,36 @@ apply plugin: 'com.google.firebase.firebase-crash'
 android {
     signingConfigs {
         release {
-
+            keyAlias 'teamcatalyst'
+            keyPassword '0NM087Uw1BJn'
+            storeFile file('/Users/aar/StudioProjects/teamcatalyst.jks')
+            storePassword '0NM087Uw1BJn'
         }
     }
+
+    def Properties versionProps = new Properties()
+    def versionPropsFile = file('version.properties')
+    if(versionPropsFile.exists())
+        versionProps.load(new FileInputStream(versionPropsFile))
+    def code = (versionProps['VERSION_CODE'] ?: "0").toInteger() + 1
+    versionProps['VERSION_CODE'] = code.toString()
+    versionProps.store(versionPropsFile.newWriter(), null)
+
     compileSdkVersion 25
-    buildToolsVersion "24.0.3"
+    buildToolsVersion "25.0.1"
     defaultConfig {
         applicationId "com.youniversals.playupgo"
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        versionCode code
+        versionName "1.0." + code
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         // Enabling multidex support.
         multiDexEnabled true
         signingConfig signingConfigs.release
+        manifestPlaceholders = [onesignal_app_id: "14f6c164-1160-4930-81ae-469c3ec559ba",
+                                // Project number pulled from dashboard, local value is ignored.
+                                onesignal_google_project_number: "148209621905"]
 
     }
     buildTypes {
@@ -57,6 +72,10 @@ dependencies {
     compile "com.google.firebase:firebase-messaging:$rootProject.playServicesVersion"
     compile "com.google.firebase:firebase-invites:$rootProject.playServicesVersion"
     compile "com.google.android.gms:play-services-maps:$rootProject.playServicesVersion"
+    compile "com.google.android.gms:play-services-gcm:$rootProject.playServicesVersion"
+    compile "com.google.android.gms:play-services-location:$rootProject.playServicesVersion"
+    compile 'com.onesignal:OneSignal:3.+@aar'
+
     // Dagger 2
     compile "com.google.dagger:dagger:$rootProject.daggerVersion"
     kapt "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
@@ -83,12 +102,17 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.stepstone.stepper:material-stepper:2.1.0'
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
-    compile 'com.android.support:support-v4:25.1.0'
+    compile 'com.github.hotchemi:android-rate:1.0.1'
+    compile 'com.github.IntruderShanky:Frisson:2.1.1'
+    compile 'com.airbnb.android:lottie:1.5.1'
+    compile 'com.yarolegovich:lovely-dialog:1.0.5'
+
     testCompile 'junit:junit:4.12'
     provided 'org.glassfish:javax.annotation:10.0-b28'
 }
 repositories {
     mavenCentral()
     maven { url "http://dl.bintray.com/pixplicity/maven" }
+    maven { url "https://jitpack.io" }
 }
 apply plugin: 'com.google.gms.google-services'

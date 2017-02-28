@@ -2,6 +2,7 @@ package com.youniversals.playupgo.flux.action
 
 import android.support.annotation.StringDef
 import com.youniversals.playupgo.data.MatchJson
+import com.youniversals.playupgo.data.UserMatch
 import com.youniversals.playupgo.flux.Action
 import com.youniversals.playupgo.flux.Dispatcher
 import com.youniversals.playupgo.flux.Utils
@@ -23,6 +24,8 @@ class MatchActionCreator(private val mDispatcher: Dispatcher, private val matchM
         const val ACTION_GET_USER_MATCHES_F = "ACTION_GET_USER_MATCHES_F"
         const val ACTION_UPDATE_NEW_MATCH_S = "ACTION_UPDATE_NEW_MATCH_S"
         const val ACTION_UPDATE_NEW_MATCH_F = "ACTION_UPDATE_NEW_MATCH_F"
+        const val ACTION_ACCEPT_JOIN_MATCH_S = "ACTION_ACCEPT_JOIN_MATCH_S"
+        const val ACTION_ACCEPT_JOIN_MATCH_F = "ACTION_ACCEPT_JOIN_MATCH_F"
         const val ACTION_JOIN_MATCH_S = "ACTION_JOIN_MATCH_S"
         const val ACTION_JOIN_MATCH_F = "ACTION_JOIN_MATCH_F"
         const val ACTION_CREATE_MATCH_S = "ACTION_CREATE_MATCH_S"
@@ -79,6 +82,15 @@ class MatchActionCreator(private val mDispatcher: Dispatcher, private val matchM
                     mDispatcher.dispatch(Action(ACTION_CREATE_MATCH_S, it))
                 }, {
                     mDispatcher.dispatch(Action(ACTION_CREATE_MATCH_F, mUtils.getError(it)))
+                })
+    }
+
+    fun acceptJoinMatch(userMatch: UserMatch) {
+        matchModel.acceptJoinMatch(userMatch)
+                .subscribe({
+                    mDispatcher.dispatch(Action(ACTION_ACCEPT_JOIN_MATCH_S, it))
+                }, {
+                    mDispatcher.dispatch(Action(ACTION_ACCEPT_JOIN_MATCH_F, mUtils.getError(it)))
                 })
     }
 }
