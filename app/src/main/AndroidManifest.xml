@@ -42,7 +42,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
         <activity
             android:name=".main.MainActivity"
             android:label="@string/title_activity_main">
@@ -62,12 +61,17 @@
         </activity>
         <activity
             android:name=".profile.ProfileActivity"
-            android:label="@string/title_activity_profile"
+            android:label=""
             android:parentActivityName=".main.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.youniversals.playupgo.main.MainActivity"/>
+        </activity>
+        <activity
+            android:name=".notifications.ScrollingActivity"
+            android:label="@string/title_activity_scrolling"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 

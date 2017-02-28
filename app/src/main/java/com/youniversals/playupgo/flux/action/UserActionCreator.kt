@@ -17,6 +17,8 @@ class UserActionCreator(private val mDispatcher: Dispatcher, private val mUserMo
         const val ACTION_INITIALIZE_USER = "ACTION_INITIALIZE_USER"
         const val ACTION_LOGIN_SUCCESS = "ACTION_LOGIN_SUCCESS"
         const val ACTION_LOGIN_FAILED = "ACTION_LOGIN_FAILED"
+        const val ACTION_GET_USER_PROFILE_S = "ACTION_GET_USER_PROFILE_S"
+        const val ACTION_GET_USER_PROFILE_F = "ACTION_GET_USER_PROFILE_F"
     }
     @StringDef(value = *arrayOf(ACTION_INITIALIZE_USER))
     @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
@@ -37,5 +39,12 @@ class UserActionCreator(private val mDispatcher: Dispatcher, private val mUserMo
                             Action(ACTION_LOGIN_FAILED, mUtils.getError(throwable)))
                 })
 
+    }
+
+    fun getUserProfile(externalId: String) {
+        mUserModel.getUserProfile(externalId)
+                .subscribe({ userProfile -> mDispatcher.dispatch(Action(ACTION_GET_USER_PROFILE_S, userProfile)) }, {
+                    throwable -> mDispatcher.dispatch(Action(ACTION_GET_USER_PROFILE_F, mUtils.getError(throwable)))
+                })
     }
 }

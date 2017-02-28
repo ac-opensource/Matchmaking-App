@@ -21,6 +21,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.tbruyelle.rxpermissions.RxPermissions
 import com.youniversals.playupgo.PlayUpApplication
 import com.youniversals.playupgo.R
@@ -100,6 +101,10 @@ class MainActivity : BaseActivity(), OnMapReadyCallback, GoogleApiClient.OnConne
             mMap?.uiSettings?.setAllGesturesEnabled(false)
             rippleBackground.postDelayed({
                 val latLng = "${mMap?.cameraPosition?.target?.latitude},${mMap?.cameraPosition?.target?.longitude}"
+                val bundle = Bundle()
+                bundle.putString("coordinates", latLng)
+                bundle.putString("address", locationAddressTextView.text?.toString())
+                FirebaseAnalytics.getInstance(this).logEvent("search_nearby", bundle)
                 matchActionCreator.getNearbyMatches(latLng, radiusSeekBar?.progress!!)
             }, 3000)
         }
