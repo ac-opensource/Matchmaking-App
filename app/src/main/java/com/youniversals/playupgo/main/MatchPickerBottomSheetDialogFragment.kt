@@ -7,11 +7,11 @@ import android.support.design.widget.BottomSheetBehavior
 import android.support.design.widget.BottomSheetDialog
 import android.support.design.widget.BottomSheetDialogFragment
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.youniversals.playupgo.PlayUpApplication
 import com.youniversals.playupgo.R
 import com.youniversals.playupgo.flux.store.MatchStore
@@ -53,9 +53,16 @@ class MatchPickerBottomSheetDialogFragment : BottomSheetDialogFragment() {
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         val matchAdapter = MatchListAdapter(View.OnClickListener { v ->
             if (v is MatchView) {
-                Log.d("MATCH_DETAILS", v.data.toString())
+                val bundle = Bundle()
+                bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "match")
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, v.data!!.title)
+                bundle.putString(FirebaseAnalytics.Param.LOCATION, v.data!!.locationName)
+                FirebaseAnalytics.getInstance(activity).logEvent(FirebaseAnalytics.Event.VIEW_ITEM, bundle)
                 MatchDetailsActivity.startActivity(activity, v.data!!, v.matchCard!!)
             } else if (v is AddMatchView) {
+                val bundle = Bundle()
+                bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "create_match")
+                FirebaseAnalytics.getInstance(activity).logEvent(FirebaseAnalytics.Event.VIEW_ITEM, bundle)
                 AddNewMatchActivity.startActivity(activity)
             }
         })

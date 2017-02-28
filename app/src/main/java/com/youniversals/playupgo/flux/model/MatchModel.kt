@@ -37,6 +37,16 @@ class MatchModel(val restApi: RestApi) {
         }
     }
 
+    fun acceptJoinMatch(um: UserMatch) : Observable<UserMatch> {
+        val userMatch = UserMatch(um.matchId, um.userId, id = um.id!!, group = -1)
+        return restApi.acceptJoinMatch(userMatch).map {
+            OneSignal.sendTag("matchId", um.matchId.toString())
+            it.copy(user = User(
+                    id = um.userId,
+                    username = um.user!!.username))
+        }
+    }
+
     fun createMatch(newMatch: MatchJson): Observable<Match> {
         return restApi.createMatch(newMatch).flatMap { createdMatch ->
             OneSignal.sendTag("matchId", createdMatch.id.toString())

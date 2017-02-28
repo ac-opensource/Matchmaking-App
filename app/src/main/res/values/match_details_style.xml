@@ -7,4 +7,37 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <style name="cardView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:transitionName">match</item>
+        <item name="cardUseCompatPadding">true</item>
+        <item name="cardPreventCornerOverlap">true</item>
+        <item name="cardElevation">@dimen/cardview_default_elevation</item>
+        <item name="cardCornerRadius">4dp</item>
+    </style>
+
+    <style name="cardTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:lineSpacingMultiplier">1</item>
+        <item name="android:textColor">#000000</item>
+        <item name="android:textSize">@dimen/material_card_title_block_small_text_size</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:maxLines">3</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="TeamMemberStyle" parent="">
+        <item name="android:layout_marginLeft">-10dp</item>
+        <item name="android:layout_width">@dimen/material_increment_1x</item>
+        <item name="android:layout_height">@dimen/material_increment_1x</item>
+        <item name="civ_border_color">@color/white</item>
+        <item name="civ_border_width">4dp</item>
+    </style>
+
+    <style name="TeamMemberStyle.Blue" parent="TeamMemberStyle">
+        <item name="civ_border_color">@color/material_color_blue_accent</item>
+    </style>
+
 </resources>

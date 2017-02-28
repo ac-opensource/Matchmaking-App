@@ -24,10 +24,5 @@
         <item name="android:background">?android:attr/listDivider</item>
     </style>
 
-    <style name="TeamMemberStyle" parent="">
-        <item name="android:layout_marginLeft">-10dp</item>
-        <item name="android:layout_width">@dimen/material_increment_1x</item>
-        <item name="android:layout_height">@dimen/material_increment_1x</item>
-    </style>
 
 </resources>

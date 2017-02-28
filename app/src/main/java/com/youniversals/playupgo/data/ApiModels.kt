@@ -125,6 +125,7 @@ data class MatchJson(
 data class UserMatch(
         val matchId: Long,
         val userId: Long,
+        val id: Long? = null,
         val group: Long? = 1,
         val user: User? = null
 )
@@ -189,4 +190,22 @@ data class Message(
         val threadId: Long,
         val userId: Long,
         val message: String
+)
+
+data class UserProfile(
+        val provider: String,
+        val externalId: String,
+        val profile: Profile,
+        val created: String,
+        val modified: String,
+        val userId: Int,
+        val id: Int
+)
+
+data class Profile(
+        val id: Long,
+        val provider: String,
+        val profileUrl: String,
+        val name: Name,
+        val gender: String
 )

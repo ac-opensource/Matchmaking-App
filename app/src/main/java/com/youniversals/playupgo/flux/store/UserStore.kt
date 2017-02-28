@@ -1,10 +1,12 @@
 package com.youniversals.playupgo.flux.store
 
 import com.youniversals.playupgo.data.UserIdentity
+import com.youniversals.playupgo.data.UserProfile
 import com.youniversals.playupgo.flux.Action
 import com.youniversals.playupgo.flux.AppError
 import com.youniversals.playupgo.flux.Store
 import com.youniversals.playupgo.flux.action.UserActionCreator
+import com.youniversals.playupgo.flux.action.UserActionCreator.Companion.ACTION_GET_USER_PROFILE_S
 import com.youniversals.playupgo.flux.action.UserActionCreator.Companion.ACTION_INITIALIZE_USER
 import com.youniversals.playupgo.flux.action.UserActionCreator.Companion.ACTION_LOGIN_SUCCESS
 import rx.Observable
@@ -16,14 +18,13 @@ import rx.Observable
  */
 class UserStore : Store<UserStore>() {
 
-    private var mUser: UserIdentity? = null
+    var user: UserIdentity? = null
+        private set
+    var userProfile: UserProfile? = null
+        private set
     private var mError: AppError? = null
     @UserActionCreator.UserAction
     private var mAction = Action.ACTION_NO_ACTION
-
-    fun user(): UserIdentity? {
-        return mUser
-    }
 
     fun error(): AppError? {
         return mError
@@ -47,6 +48,13 @@ class UserStore : Store<UserStore>() {
                 updateAction(action)
                 notifyStoreChanged(this)
             }
+            ACTION_GET_USER_PROFILE_S -> {
+                updateState()
+                updateUser(action)
+                updateError(action)
+                updateAction(action)
+                notifyStoreChanged(this)
+            }
         }
     }
 
@@ -56,13 +64,15 @@ class UserStore : Store<UserStore>() {
 
     private fun updateUser(action: Action) {
         if (action.data != null && action.data is UserIdentity) {
-            mUser = action.data as UserIdentity?
+            user = action.data
+        } else if (action.data != null && action.data is UserProfile) {
+            userProfile = action.data
         }
     }
 
     private fun updateError(action: Action) {
         if (action.data != null && action.data is AppError) {
-            mError = action.data as AppError?
+            mError = action.data
         }
     }
 

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.stepstone.stepper.StepperLayout
 import com.stepstone.stepper.VerificationError
 import com.youniversals.playupgo.PlayUpApplication
@@ -51,6 +52,11 @@ class AddNewMatchActivity : BaseActivity() {
             }
 
             override fun onCompleted(completeButton: View?) {
+                val bundle = Bundle()
+                bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "match")
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, matchStore.newMatch!!.title)
+                bundle.putString(FirebaseAnalytics.Param.LOCATION, matchStore.newMatch!!.locationName)
+                FirebaseAnalytics.getInstance(this@AddNewMatchActivity).logEvent("create_item", bundle)
                 completeButtonView = completeButton
                 completeButtonView?.isEnabled = false
                 matchActionCreator.createMatch(matchStore.newMatch!!)

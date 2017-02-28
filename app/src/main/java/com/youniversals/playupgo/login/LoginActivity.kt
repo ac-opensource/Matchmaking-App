@@ -7,6 +7,7 @@ import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.login.LoginResult
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.pixplicity.easyprefs.library.Prefs
 import com.youniversals.playupgo.PlayUpApplication
 import com.youniversals.playupgo.R
@@ -20,6 +21,8 @@ import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import javax.inject.Inject
+
+
 
 class LoginActivity : BaseActivity() {
     @Inject lateinit var userStore: UserStore
@@ -43,7 +46,7 @@ class LoginActivity : BaseActivity() {
     private fun initialize() {
         addSubscriptionToUnsubscribe(
                 userStore.observableWithFilter(ACTION_LOGIN_SUCCESS).subscribe({
-                    it.user()?.let {
+                    it.user?.let {
                         Prefs.putLong("userId", it.userId)
                         Prefs.putLong("externalId", it.id)
                         Prefs.putString("username", "${it.provider}.${it.id}")
@@ -72,7 +75,12 @@ class LoginActivity : BaseActivity() {
         facebookSignInObservable()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe ({ userActionCreator.login(it) }, {  })
+                .subscribe ({
+                    val bundle = Bundle()
+                    bundle.putString(FirebaseAnalytics.Param.SIGN_UP_METHOD, "facebook")
+                    FirebaseAnalytics.getInstance(this).logEvent(FirebaseAnalytics.Event.LOGIN, bundle)
+                    userActionCreator.login(it)
+                }, {  })
     }
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
