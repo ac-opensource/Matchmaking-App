@@ -126,6 +126,7 @@ data class UserMatch(
         val matchId: Long,
         val userId: Long,
         val id: Long? = null,
+        val isApproved: Boolean? = false,
         val group: Long? = 1,
         val user: User? = null
 )

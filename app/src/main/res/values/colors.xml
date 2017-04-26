@@ -78,6 +78,7 @@
     <color name="webGrayAlpha88">#88bdbdbd</color>
 
     <color name="linkBlue">#303F9F</color>
+    <color name="map_background">#EAEAEA</color>
 
     //Others
     <item name="O1" type="color">#212121</item>

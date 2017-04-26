@@ -6,11 +6,14 @@ import android.content.Context
 import android.content.Intent
 import android.location.Geocoder
 import android.os.Bundle
+import android.support.design.widget.BottomNavigationView.*
+import android.support.design.widget.BottomSheetBehavior
 import android.text.TextUtils
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View.*
+import android.widget.RelativeLayout
+import com.bumptech.glide.Glide
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.places.Places
@@ -22,14 +25,18 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.pixplicity.easyprefs.library.Prefs
 import com.tbruyelle.rxpermissions.RxPermissions
 import com.youniversals.playupgo.PlayUpApplication
 import com.youniversals.playupgo.R
+import com.youniversals.playupgo.data.Sport
 import com.youniversals.playupgo.flux.BaseActivity
 import com.youniversals.playupgo.flux.action.MatchActionCreator
 import com.youniversals.playupgo.flux.action.UserActionCreator
 import com.youniversals.playupgo.flux.store.MatchStore
+import com.youniversals.playupgo.newmatch.step.PickSportStepFragment
 import com.youniversals.playupgo.notifications.NotificationActivity
+import com.youniversals.playupgo.profile.ProfileActivity
 import hotchemi.android.rate.AppRate
 import kotlinx.android.synthetic.main.activity_main.*
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
@@ -42,7 +49,8 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
-class MainActivity : BaseActivity(), OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener {
+class MainActivity : BaseActivity(), OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener, PickSportStepFragment.SportPickerListener {
+
     override fun onConnectionFailed(p0: ConnectionResult) {
 
     }
@@ -50,6 +58,9 @@ class MainActivity : BaseActivity(), OnMapReadyCallback, GoogleApiClient.OnConne
     @Inject lateinit var userActionCreator: UserActionCreator
     @Inject lateinit var matchActionCreator: MatchActionCreator
     @Inject lateinit var matchStore: MatchStore
+    lateinit var preferredSportImage: String
+    var preferredSportId: Long = 1
+
 //    @Inject lateinit var googleMapsApi: GoogleApi
     private var matchPickerBottomSheetDialog: MatchPickerBottomSheetDialogFragment? = null
 
@@ -65,12 +76,17 @@ class MainActivity : BaseActivity(), OnMapReadyCallback, GoogleApiClient.OnConne
     private var  mGoogleApiClient: GoogleApiClient? = null
 
     private val PLACE_PICKER_REQUEST: Int = 1000
+    private val REQUEST_SPORT: Int = 2000
+
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<RelativeLayout>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         PlayUpApplication.fluxComponent.inject(this)
         setContentView(R.layout.activity_main)
-
+        preferredSportImage = Prefs.getString("preferredSport.image", "https://maxcdn.icons8.com/Color/PNG/512/Sports/basketball-512.png")
+        preferredSportId = Prefs.getLong("preferredSport.id", 1L)
+        Glide.with(this).load(preferredSportImage).fitCenter().into(sportFilter)
         AppRate.with(this)
                 .setInstallDays(0) // default 10, 0 means install day.
                 .setLaunchTimes(3) // default 10
@@ -81,7 +97,10 @@ class MainActivity : BaseActivity(), OnMapReadyCallback, GoogleApiClient.OnConne
 
         // Show a dialog if meets conditions
         AppRate.showRateDialogIfMeetsConditions(this)
+        bottomSheetBehavior = BottomSheetBehavior.from(llBottomSheet)
 
+        // change the state of the bottom sheet
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         initFlux()
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
@@ -105,13 +124,19 @@ class MainActivity : BaseActivity(), OnMapReadyCallback, GoogleApiClient.OnConne
                 bundle.putString("coordinates", latLng)
                 bundle.putString("address", locationAddressTextView.text?.toString())
                 FirebaseAnalytics.getInstance(this).logEvent("search_nearby", bundle)
-                matchActionCreator.getNearbyMatches(latLng, radiusSeekBar?.progress!!)
+                matchActionCreator.getNearbyMatches(latLng, radiusSeekBar?.progress!!, preferredSportId)
             }, 3000)
         }
 
-        main_location_card_view.setOnClickListener {
+        locationAddressCard.setOnClickListener {
             val builder = PlacePicker.IntentBuilder().setLatLngBounds(LatLngBounds(LatLng(14.424057,120.848934), LatLng(14.7782442,121.1636333)))
             startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST)
+        }
+
+        sportFilter.setOnClickListener {
+            val dialogFragment = PickSportStepFragment()
+//            dialogFragment.setTargetFragment(PickSportStepFragment(), REQUEST_SPORT)
+            dialogFragment.show(supportFragmentManager, "PickSportStepFragment")
         }
 
         locationMarker.setOnClickListener { onMapReady(mMap!!) }
@@ -128,6 +153,25 @@ class MainActivity : BaseActivity(), OnMapReadyCallback, GoogleApiClient.OnConne
                 radiusTextView.text = ("Search game(s) within: ${seekBar?.progress}km")
             }
         })
+
+        bottomNavigationView.setOnNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.action_notifications -> {
+                    NotificationActivity.startActivity(this)
+                }
+                R.id.action_profile -> {
+                    ProfileActivity.startActivity(this, Prefs.getLong("externalId", -1).toString())
+                }
+                R.id.action_more -> {
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+//                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                }
+                else -> {
+
+                }
+            }
+            return@setOnNavigationItemSelectedListener true
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -258,5 +302,21 @@ class MainActivity : BaseActivity(), OnMapReadyCallback, GoogleApiClient.OnConne
                 targetObservable.onNext(target)
             }
         }
+    }
+
+    override fun onSportPicked(sport: Sport) {
+        Prefs.putString("preferredSport.image", sport.icon)
+        Prefs.getLong("preferredSport.id", sport.id)
+        preferredSportImage = sport.icon
+        preferredSportId = sport.id
+        Glide.with(this).load(sport.icon).fitCenter().into(sportFilter)
+    }
+
+    override fun onBackPressed() {
+        if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            return
+        }
+        super.onBackPressed()
     }
 }

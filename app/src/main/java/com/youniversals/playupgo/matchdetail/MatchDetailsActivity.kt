@@ -56,6 +56,8 @@ class MatchDetailsActivity : BaseActivity() {
     lateinit var team2params: ViewGroup.LayoutParams
     lateinit var team2params2: ViewGroup.LayoutParams
 
+    var viewMatch: HashMap<Int, UserMatch> = hashMapOf()
+
     companion object {
         private val EXTRA_MATCH = "EXTRA_MATCH"
         fun startActivity(context: Context, match: Match, sharedMatchCardView: View) {
@@ -78,7 +80,7 @@ class MatchDetailsActivity : BaseActivity() {
             it.setDisplayShowHomeEnabled(true)
             toolbar.navigationIcon = ContextCompat.getDrawable(this, R.drawable.ic_arrow_back_white_24dp)
             toolbar.setNavigationOnClickListener {
-                finish()
+                onBackPressed()
             }
         }
         initFlux()
@@ -117,13 +119,24 @@ class MatchDetailsActivity : BaseActivity() {
         joinButton.isIndeterminateProgressMode = true
         joinButton.setOnClickListener {
             if (joinButton.progress != 100) {
-                joinButton.progress = 1
-                val bundle = Bundle()
-                bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "match")
-                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, match.title)
-                bundle.putString(FirebaseAnalytics.Param.LOCATION, match.locationName)
-                FirebaseAnalytics.getInstance(this).logEvent("join_match", bundle)
-                matchActionCreator.joinMatch(match.id)
+                val adapter = JoinMatchTeamPickerAdapter(this, listOf("Team 1" to 1L, "Team 2" to 2L))
+                LovelyChoiceDialog(this)
+                        .setTopColorRes(R.color.material_color_indigo_900)
+                        .setTitle("What team?")
+//                .setIcon(R.drawable.ic_local_atm_white_36dp)
+                        .setMessage("Pick a team that you would like to join")
+                        .setItems(adapter) { position, item ->
+                            joinButton.progress = 1
+                            val bundle = Bundle()
+                            bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "match")
+                            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, match.title)
+                            bundle.putLong(FirebaseAnalytics.Param.GROUP_ID, item.second)
+                            bundle.putString(FirebaseAnalytics.Param.LOCATION, match.locationName)
+                            FirebaseAnalytics.getInstance(this).logEvent("join_match", bundle)
+                            matchActionCreator.joinMatch(match.id, item.second)
+                        }
+                        .show()
+
             }
 
         }
@@ -225,23 +238,24 @@ class MatchDetailsActivity : BaseActivity() {
             }
             addImageForPlayer(it)
         }
-        pendingJoinsList.getChildAt(0)?.let { child ->
-            child.layoutParams = team1params
-        }
-        team1members.getChildAt(0)?.let { child ->
-            child.layoutParams = team1params
-        }
-        team2members.getChildAt(0)?.let { child ->
-            child.layoutParams = team2params
-        }
+        pendingJoinsList.getChildAt(0)?.let { it.layoutParams = team1params }
+        team1members.getChildAt(0)?.let { it.layoutParams = team1params }
+        team2members.getChildAt(0)?.let { it.layoutParams = team2params }
     }
 
     private fun addImageForPlayer(userMatch: UserMatch) {
         val circleImageView = CircleImageView(this, null, R.style.TeamMemberStyle)
+        viewMatch.put(circleImageView.id, userMatch)
         val profileId = userMatch.user!!.username.replace("facebook.", "")
         circleImageView.setOnClickListener {
-            if (Prefs.getLong("userId", -1) == match.userId && userMatch.group == 0L) {
-                showContextDialog(userMatch, profileId)
+            val myId = Prefs.getLong("userId", -1)
+            if (!viewMatch.containsKey(it.id)) {
+                ProfileActivity.startActivity(this, profileId)
+                return@setOnClickListener
+            }
+            val um = viewMatch[it.id]!!
+            if (myId == match.userId && um.group == 0L) {
+                showContextDialog(um, profileId)
             } else {
                 ProfileActivity.startActivity(this, profileId)
             }
@@ -249,11 +263,13 @@ class MatchDetailsActivity : BaseActivity() {
 
         circleImageView.layoutParams = if (userMatch.group == 1L || userMatch.group == 0L) team1params2 else team2params2
         Glide.with(this).load("http://graph.facebook.com/v2.2/$profileId/picture").into(circleImageView)
-        when (userMatch.group) {
-            0L -> pendingJoinsList.addView(circleImageView)
-            1L -> team1members.addView(circleImageView)
-            2L -> team2members.addView(circleImageView)
+        if (!userMatch.isApproved!!) {
+            pendingJoinsList.addView(circleImageView)
+        } else {
+            when (userMatch.group) {
+                1L -> team1members.addView(circleImageView)
+                2L -> team2members.addView(circleImageView)
+            }
         }
     }
-
 }

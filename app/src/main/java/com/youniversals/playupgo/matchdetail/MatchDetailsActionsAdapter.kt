@@ -31,3 +31,27 @@ class ProfileClickActionsAdapter(context: Context, actions: List<String>) : Arra
         internal var description: TextView = v.findViewById(R.id.description) as TextView
     }
 }
+
+
+class JoinMatchTeamPickerAdapter(context: Context, team: List<Pair<String, Long>>) : ArrayAdapter<Pair<String, Long>>(context, 0, team) {
+
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+        var convertView = convertView
+        val vh: ViewHolder
+        if (convertView == null) {
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_profile_action, parent, false)
+            vh = ViewHolder(convertView)
+            convertView!!.tag = vh
+        } else {
+            vh = convertView.tag as ViewHolder
+        }
+
+        val option = getItem(position)
+        vh.description.text = option.first
+        return convertView
+    }
+
+    private class ViewHolder(v: View) {
+        internal var description: TextView = v.findViewById(R.id.description) as TextView
+    }
+}

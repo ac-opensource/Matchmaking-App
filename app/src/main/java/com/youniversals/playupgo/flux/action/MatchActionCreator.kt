@@ -20,6 +20,8 @@ class MatchActionCreator(private val mDispatcher: Dispatcher, private val matchM
     companion object {
         const val ACTION_GET_NEARBY_MATCHES_S = "ACTION_GET_NEARBY_MATCHES_S"
         const val ACTION_GET_NEARBY_MATCHES_F = "ACTION_GET_NEARBY_MATCHES_F"
+        const val ACTION_GET_LATEST_USER_MATCHES_S = "ACTION_GET_LATEST_USER_MATCHES_S"
+        const val ACTION_GET_LATEST_USER_MATCHES_F = "ACTION_GET_LATEST_USER_MATCHES_F"
         const val ACTION_GET_USER_MATCHES_S = "ACTION_GET_USER_MATCHES_S"
         const val ACTION_GET_USER_MATCHES_F = "ACTION_GET_USER_MATCHES_F"
         const val ACTION_UPDATE_NEW_MATCH_S = "ACTION_UPDATE_NEW_MATCH_S"
@@ -54,8 +56,17 @@ class MatchActionCreator(private val mDispatcher: Dispatcher, private val matchM
                 })
     }
 
-    fun getNearbyMatches(latLng: String, maxDistance: Int) {
-        matchModel.getNearbyMatches(latLng, maxDistance)
+    fun getMatches(userId: Long) {
+        matchModel.getMatches(userId)
+                .subscribe({
+                    mDispatcher.dispatch(Action(ACTION_GET_LATEST_USER_MATCHES_S, it))
+                }, {
+                    mDispatcher.dispatch(Action(ACTION_GET_LATEST_USER_MATCHES_F, mUtils.getError(it)))
+                })
+    }
+
+    fun getNearbyMatches(latLng: String, maxDistance: Int, sportId: Long) {
+        matchModel.getNearbyMatches(latLng, maxDistance, sportId)
                 .subscribe({
                     mDispatcher.dispatch(Action(ACTION_GET_NEARBY_MATCHES_S, it))
                 }, {
@@ -63,8 +74,8 @@ class MatchActionCreator(private val mDispatcher: Dispatcher, private val matchM
                 })
     }
 
-    fun joinMatch(matchId: Long) {
-        matchModel.joinMatch(matchId)
+    fun joinMatch(matchId: Long, group: Long) {
+        matchModel.joinMatch(matchId, group)
                 .subscribe({
                     mDispatcher.dispatch(Action(ACTION_JOIN_MATCH_S, it))
                 }, {
