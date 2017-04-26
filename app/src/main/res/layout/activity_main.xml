@@ -9,7 +9,7 @@
     tools:context="com.youniversals.playupgo.main.MainActivity" >
 
     <!-- main content layout-->
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/container_toolbar">
@@ -19,7 +19,7 @@
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="90dp"
+            android:layout_marginBottom="@dimen/material_increment_1x"
             tools:context="com.youniversals.playupgo.main.MainActivity" />
 
         <LinearLayout
@@ -27,7 +27,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="30dp"
+            android:paddingBottom="30dp"
+            android:layout_centerInParent="true"
             android:gravity="center"
             android:orientation="vertical" >
 
@@ -35,6 +36,7 @@
                 android:id="@+id/locationMarkerText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:foreground="?selectableItemBackground"
                 android:background="@drawable/xml_rounder_corner_black"
                 android:gravity="center"
                 android:minWidth="250dp"
@@ -50,6 +52,67 @@
                 android:src="@drawable/ic_location_pin" />
         </LinearLayout>
 
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/bottomNavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/material_increment_1x"
+            android:layout_alignParentBottom="true"
+            app:itemBackground="@color/map_background"
+            app:itemIconTint="@color/black"
+            app:itemTextColor="@color/black"
+            app:menu="@menu/menu_main"
+            />
+
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/locationAddressCard"
+            android:layout_margin="@dimen/material_card_edge_margin"
+            app:cardCornerRadius="@dimen/cardview_default_radius"
+            android:foreground="?selectableItemBackground"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:padding="@dimen/material_card_actions_row_padding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/locationLabelTextView"
+                    android:text="Play Location"
+                    android:textSize="@dimen/material_typography_regular_caption_text_size"
+                    android:textStyle="bold"
+                    android:textAllCaps="true"
+                    android:gravity="center"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="match_parent"
+                    android:layout_toLeftOf="@+id/sportFilter"
+                    android:layout_height="wrap_content" />
+
+                <View
+                    android:layout_below="@id/locationLabelTextView"
+                    android:layout_toLeftOf="@+id/sportFilter"
+                    style="@style/Divider" />
+
+                <TextView
+                    android:id="@+id/locationAddressTextView"
+                    tools:text="Try Very Long Address"
+                    android:textSize="@dimen/material_typography_regular_headline_text_size"
+                    android:layout_below="@id/locationLabelTextView"
+                    android:gravity="center"
+                    android:layout_toLeftOf="@+id/sportFilter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <ImageView
+                    android:id="@+id/sportFilter"
+                    tools:src="@drawable/ic_sport_basketball"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="@dimen/material_baseline_grid_8x"
+                    android:layout_height="@dimen/material_baseline_grid_8x"/>
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
         <com.skyfishjy.library.RippleBackground
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -58,7 +121,9 @@
             app:rb_radius="32dp"
             app:rb_rippleAmount="4"
             app:rb_duration="3000"
-            app:rb_scale="6">
+            app:rb_scale="6"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true">
             <ImageView
                 android:layout_width="64dp"
                 android:layout_height="64dp"
@@ -66,61 +131,18 @@
                 android:id="@+id/centerImage"
                 android:src="@drawable/ic_location_pin"/>
         </com.skyfishjy.library.RippleBackground>
-    </FrameLayout>
-
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/main_location_card_view"
-        android:layout_margin="@dimen/material_card_edge_margin"
-        app:cardCornerRadius="@dimen/cardview_default_radius"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <RelativeLayout
-            android:padding="@dimen/material_card_actions_row_padding"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/locationLabelTextView"
-                android:text="Play Location"
-                android:textSize="@dimen/material_typography_regular_caption_text_size"
-                android:textStyle="bold"
-                android:textAllCaps="true"
-                android:layout_centerHorizontal="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <View
-                android:layout_below="@id/locationLabelTextView"
-                style="@style/Divider" />
-
-            <TextView
-                android:id="@+id/locationAddressTextView"
-                tools:text="Try Very Long Address"
-                android:textSize="@dimen/material_typography_regular_headline_text_size"
-                android:layout_below="@id/locationLabelTextView"
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-
-        </RelativeLayout>
-
-
-    </android.support.v7.widget.CardView>
-
+    </RelativeLayout>
 
     <!-- bottom sheet layout -->
     <RelativeLayout
-        android:id="@+id/linear_layout_bottom_sheet"
+        android:id="@+id/llBottomSheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:behavior_peekHeight="90dp"
         app:layout_behavior="@string/bottom_sheet_behavior"
+        app:behavior_hideable="true"
         android:elevation="@dimen/material_bottom_sheet_elevation"
         android:background="@color/material_bottom_sheet_background_fill">
-
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/material_baseline_grid_1x"
@@ -158,8 +180,8 @@
                 android:layout_height="@dimen/material_bottom_sheet_grid_item_label_height" />
 
             <View style="@style/Divider"
-                android:layout_below="@id/radiusTextView"
-                android:layout_marginTop="@dimen/material_baseline_grid_2x"
+                  android:layout_below="@id/radiusTextView"
+                  android:layout_marginTop="@dimen/material_baseline_grid_2x"
                 />
 
             <TextView
@@ -171,6 +193,7 @@
                 android:layout_centerHorizontal="true"
                 android:background="@color/white"
                 android:text="▼ more ▼"
+                android:visibility="invisible"
                 android:textSize="@dimen/material_bottom_sheet_grid_item_label_text_size"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/material_bottom_sheet_grid_item_label_height" />

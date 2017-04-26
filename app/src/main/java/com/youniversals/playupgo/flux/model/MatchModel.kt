@@ -8,6 +8,7 @@ import com.youniversals.playupgo.data.MatchJson
 import com.youniversals.playupgo.data.User
 import com.youniversals.playupgo.data.UserMatch
 import rx.Observable
+import java.util.concurrent.TimeUnit
 
 /**
  * YOYO HOLDINGS
@@ -23,12 +24,12 @@ class MatchModel(val restApi: RestApi) {
         return restApi.getUsersByMatchId(filterString)
     }
 
-    fun getNearbyMatches(latLng: String, maxDistance: Int): Observable<List<Match>> {
-        return restApi.nearMatches(latLng, maxDistance)
+    fun getNearbyMatches(latLng: String, maxDistance: Int, sportId: Long): Observable<List<Match>> {
+        return restApi.nearMatches(location=latLng, maxDistance = maxDistance, sportId = sportId).timeout(3000, TimeUnit.SECONDS)
     }
 
-    fun joinMatch(matchId: Long) : Observable<UserMatch> {
-        val userMatch = UserMatch(matchId, Prefs.getLong("userId", 0))
+    fun joinMatch(matchId: Long, group: Long) : Observable<UserMatch> {
+        val userMatch = UserMatch(matchId, Prefs.getLong("userId", 0), group = group)
         return restApi.joinMatch(userMatch).map {
             OneSignal.sendTag("matchId", matchId.toString())
             it.copy(user = User(
@@ -38,7 +39,7 @@ class MatchModel(val restApi: RestApi) {
     }
 
     fun acceptJoinMatch(um: UserMatch) : Observable<UserMatch> {
-        val userMatch = UserMatch(um.matchId, um.userId, id = um.id!!, group = -1)
+        val userMatch = UserMatch(um.matchId, um.userId, id = um.id!!, group = um.group, isApproved = true)
         return restApi.acceptJoinMatch(userMatch).map {
             OneSignal.sendTag("matchId", um.matchId.toString())
             it.copy(user = User(
@@ -50,8 +51,12 @@ class MatchModel(val restApi: RestApi) {
     fun createMatch(newMatch: MatchJson): Observable<Match> {
         return restApi.createMatch(newMatch).flatMap { createdMatch ->
             OneSignal.sendTag("matchId", createdMatch.id.toString())
-            joinMatch(createdMatch.id).map { createdMatch }
+            joinMatch(createdMatch.id, group = 1).map { createdMatch }
         }
+    }
+
+    fun getMatches(userId: Long): Observable<List<Match>> {
+        return restApi.getMatches(userId)
     }
 
 }

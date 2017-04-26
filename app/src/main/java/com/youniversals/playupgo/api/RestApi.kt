@@ -20,6 +20,7 @@ interface RestApi {
     fun nearMatches(@Query("filter[where][location][near]") location: String,
                     @Query("filter[where][location][maxDistance]") maxDistance: Int = 5,
                     @Query("filter[where][location][unit]") unit: String = "kilometers",
+                    @Query("filter[where][sportId]") sportId: Long = 1,
                     @Query("filter[where][date][gt]") date: Long = System.currentTimeMillis()): Observable<List<Match>>
 
     @POST("/api/matches")
@@ -51,5 +52,8 @@ interface RestApi {
 
     @GET("/api/userIdentities/findByExternalId/{externalId}")
     fun getUserProfile(@Path("externalId") externalId: String): Observable<UserProfile>
+
+    @GET("/api/matches/latest/{userId}")
+    fun getMatches(@Path("userId") userId: Long): Observable<List<Match>>
 
 }

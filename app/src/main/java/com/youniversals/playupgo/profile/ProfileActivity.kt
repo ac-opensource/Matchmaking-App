@@ -10,11 +10,15 @@ import android.support.v7.widget.Toolbar
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.animation.GlideAnimation
 import com.bumptech.glide.request.target.SimpleTarget
+import com.pixplicity.easyprefs.library.Prefs
 import com.youniversals.playupgo.PlayUpApplication
 import com.youniversals.playupgo.R
 import com.youniversals.playupgo.flux.BaseActivity
+import com.youniversals.playupgo.flux.action.MatchActionCreator
+import com.youniversals.playupgo.flux.action.MatchActionCreator.Companion.ACTION_GET_LATEST_USER_MATCHES_S
 import com.youniversals.playupgo.flux.action.UserActionCreator
 import com.youniversals.playupgo.flux.action.UserActionCreator.Companion.ACTION_GET_USER_PROFILE_S
+import com.youniversals.playupgo.flux.store.MatchStore
 import com.youniversals.playupgo.flux.store.UserStore
 import com.youniversals.playupgo.util.SocialUtils
 import kotlinx.android.synthetic.main.activity_profile.*
@@ -25,6 +29,8 @@ class ProfileActivity : BaseActivity() {
 
     @Inject lateinit var userActionCreator: UserActionCreator
     @Inject lateinit var userStore: UserStore
+    @Inject lateinit var matchStore: MatchStore
+    @Inject lateinit var matchActionCreator: MatchActionCreator
 
     companion object {
         private val EXTRA_EXTERNAL_ID: String = "EXTRA_EXTERNAL_ID"
@@ -35,6 +41,9 @@ class ProfileActivity : BaseActivity() {
             context.startActivity(intent)
         }
     }
+
+    private lateinit var externalId: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         PlayUpApplication.fluxComponent.inject(this)
@@ -42,7 +51,7 @@ class ProfileActivity : BaseActivity() {
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
 
-        val externalId = intent.getStringExtra(EXTRA_EXTERNAL_ID)
+        externalId = intent.getStringExtra(EXTRA_EXTERNAL_ID)
 
         val fab = findViewById(R.id.fab) as FloatingActionButton
         fab.setOnClickListener { view ->
@@ -50,7 +59,6 @@ class ProfileActivity : BaseActivity() {
         }
 
         initFlux()
-        userActionCreator.getUserProfile(externalId)
 //        heartLottieView.setOnClickListener {
 //            heartLottieView.playAnimation()
 //        }
@@ -94,5 +102,18 @@ class ProfileActivity : BaseActivity() {
                     val name = it.userProfile!!.profile.name
                     nameTextView.text = "${name.givenName} ${name.familyName}"
                 }
+        userActionCreator.getUserProfile(externalId)
+
+        matchStore.observableWithFilter(ACTION_GET_LATEST_USER_MATCHES_S)
+                .subscribe {
+                    if (it.error != null) return@subscribe
+                    val matches = it.matches
+                    matches?.get(0)?.let {
+                        mostRecentGameTitle.text = it.title
+                        mostRecentGameLocationName.text = it.locationName
+                    }
+                }
+        matchActionCreator.getMatches(Prefs.getLong("userId", -1))
+
     }
 }

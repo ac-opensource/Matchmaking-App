@@ -1,13 +1,17 @@
 package com.youniversals.playupgo.newmatch.step
 
 
+import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
+import android.support.v4.app.DialogFragment
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.Toast
 import com.pixplicity.easyprefs.library.Prefs
 import com.stepstone.stepper.Step
@@ -15,6 +19,7 @@ import com.stepstone.stepper.VerificationError
 import com.youniversals.playupgo.PlayUpApplication
 import com.youniversals.playupgo.R
 import com.youniversals.playupgo.data.MatchJson
+import com.youniversals.playupgo.data.Sport
 import com.youniversals.playupgo.flux.action.MatchActionCreator
 import com.youniversals.playupgo.flux.action.SportActionCreator
 import com.youniversals.playupgo.flux.action.SportActionCreator.Companion.ACTION_GET_SPORTS_S
@@ -28,16 +33,19 @@ import rx.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
 
+
+
 /**
  * A simple [Fragment] subclass.
  */
-class PickSportStepFragment : Fragment(), Step {
+class PickSportStepFragment : DialogFragment(), Step {
 
     @Inject lateinit var sportActionCreator: SportActionCreator
     @Inject lateinit var sportStore: SportStore
     @Inject lateinit var matchActionCreator: MatchActionCreator
     @Inject lateinit var matchStore: MatchStore
     @Inject lateinit var userStore: UserStore
+    private var sportPickerListener: SportPickerListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,6 +82,7 @@ class PickSportStepFragment : Fragment(), Step {
                 )
 
                 matchActionCreator.updateNewMatch(match.copy(sportId = data.id))
+                sportPickerListener?.apply { onSportPicked(data) }
             }
         })
 
@@ -96,11 +105,28 @@ class PickSportStepFragment : Fragment(), Step {
 
     }
 
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return super.onCreateDialog(savedInstanceState).apply {
+            window.requestFeature(Window.FEATURE_NO_TITLE)
+        }
+    }
+
     override fun verifyStep(): VerificationError? {
         //return null if the user can go to the next step, create a new VerificationError instance otherwise
         val newMatch = matchStore.newMatch ?: return VerificationError("No sport selected!")
         if (newMatch.sportId == 0L) return VerificationError("No sport selected!")
         return null
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        if (context is SportPickerListener) {
+            sportPickerListener = context
+        }
+    }
+
+    interface SportPickerListener {
+        fun onSportPicked(sport: Sport)
     }
 
     override fun onSelected() {
