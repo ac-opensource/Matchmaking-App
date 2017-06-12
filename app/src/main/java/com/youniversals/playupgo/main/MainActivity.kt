@@ -34,6 +34,7 @@ import com.youniversals.playupgo.flux.BaseActivity
 import com.youniversals.playupgo.flux.action.MatchActionCreator
 import com.youniversals.playupgo.flux.action.UserActionCreator
 import com.youniversals.playupgo.flux.store.MatchStore
+import com.youniversals.playupgo.newmatch.AddNewMatchActivity
 import com.youniversals.playupgo.newmatch.step.PickSportStepFragment
 import com.youniversals.playupgo.notifications.NotificationActivity
 import com.youniversals.playupgo.profile.ProfileActivity
@@ -156,6 +157,9 @@ class MainActivity : BaseActivity(), OnMapReadyCallback, GoogleApiClient.OnConne
 
         bottomNavigationView.setOnNavigationItemSelectedListener {
             when (it.itemId) {
+                R.id.action_new_match -> {
+                    AddNewMatchActivity.startActivity(this)
+                }
                 R.id.action_notifications -> {
                     NotificationActivity.startActivity(this)
                 }

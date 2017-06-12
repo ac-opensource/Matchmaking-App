@@ -58,6 +58,6 @@
         android:layout_margin="@dimen/fab_margin"
         app:layout_anchor="@id/appBar"
         app:layout_anchorGravity="bottom|end"
-        app:srcCompat="@drawable/com_facebook_favicon_white"/>
+        app:srcCompat="@drawable/com_facebook_button_icon_white"/>
 
 </android.support.design.widget.CoordinatorLayout>

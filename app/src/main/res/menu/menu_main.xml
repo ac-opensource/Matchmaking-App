@@ -3,6 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.youniversals.playupgo.main.MainActivity">
     <item
+        android:id="@+id/action_new_match"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_add"
+        android:title="@string/action_new_match"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/action_notifications"
         android:orderInCategory="100"
         android:icon="@drawable/ic_os_notification_fallback_white_24dp"

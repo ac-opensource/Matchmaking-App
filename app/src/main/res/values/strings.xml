@@ -104,4 +104,5 @@
     </string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
     <string name="action_profile">Profile</string>
+    <string name="action_new_match">New Match</string>
 </resources>
