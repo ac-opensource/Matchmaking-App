@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) 2015 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#D50000</color>
+
+    <drawable name="completedTaskBackground">#CCCCCC</drawable>
+
+    <drawable name="touchFeedback">#CFD8DC</drawable>
+
+    <color name="transparent">#00FFFFFF</color>
+    <color name="gray">#FF999999</color>
+    <color name="lightBlue">#FFA9C4DA</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="wsBlue">#4191D7</color>
+    <color name="wsBlue2">#3A7DC2</color>
+    <color name="wsGreen">#4ABE22</color>
+    <color name="highlightBlue">#E3F2FD</color>
+    <color name="fbBlue">#4b67a3</color>
+    <color name="textColor">#FFFFFF</color>
+    <color name="offWhite">#EEEEEE</color>
+    <color name="warmWhite">#EAE9E4</color>
+
+    <!-- Nav colors -->
+    <color name="navItemGray">#2B2E33</color>
+    <color name="navBgGray">#3F4247</color>
+    <color name="navTextGray">#B8BEC7</color>
+
+    <!-- Profile colors -->
+    <color name="profileBlue">#3A7DC2</color>
+    <color name="profileLightBlue">#0FB3F0</color>
+    <color name="profileGreen">#39B54A</color>
+    <color name="profilePurple">#BD8CBF</color>
+    <color name="profileOrange">#F7941D</color>
+    <color name="profileRed">#ED1C24</color>
+    <color name="profileMagenta">#EC008C</color>
+    <color name="profileGray">#959595</color>
+    <color name="profileBlack">#000000</color>
+
+    <!-- ICS+ style Design -->
+    <color name="normal">#B0B0B0</color>
+    <color name="light">#FFFFFF</color>
+    <color name="dark">#000000</color>
+    <color name="highlight">#FF38C0F4</color>
+
+    <color name="webBlue">#3f80c2</color>
+    <color name="webLightBlue">#02aeee</color>
+    <color name="webLightGreen">#8dc63f</color>
+    <color name="webPurple">#be8ec0</color>
+    <color name="webOrange">#ff6600</color>
+    <color name="webRed">#ee3b41</color>
+    <color name="webGray">#bdbdbd</color>
+
+    <color name="webGrayTransparent">#88bdbdbd</color>
+
+    <color name="webBlueAlpha88">#883f80c2</color>
+    <color name="webLightBlueAlpha88">#8802aeee</color>
+    <color name="webLightGreenAlpha88">#888dc63f</color>
+    <color name="webPurpleAlpha88">#88be8ec0</color>
+    <color name="webOrangeAlpha88">#88ff6600</color>
+    <color name="webRedAlpha88">#88ee3b41</color>
+    <color name="webGrayAlpha88">#88bdbdbd</color>
+
+    <color name="linkBlue">#303F9F</color>
+    <color name="map_background">#EAEAEA</color>
+
+    //Others
+    <item name="O1" type="color">#212121</item>
+    <item name="O2" type="color">#666666</item>
+    <item name="O3" type="color">#d9d9d9</item>
+    <item name="O4" type="color">#e5e5e5</item>
+    <item name="O5" type="color">#f39d36</item>
+    <item name="O6" type="color">#1abc9c</item>
+    <item name="O7" type="color">#16a085</item>
+    <item name="O8" type="color">#72d3c0</item>
+    <item name="O9" type="color">#e28c41</item>
+    <item name="O10" type="color">#cf6102</item>
+    <item name="O11" type="color">#f5f5f5</item>
+    <item name="O12" type="color">#33cfff</item>
+    <item name="O13" type="color">#007ac2</item>
+    <item name="O14" type="color">#a1a1a1</item>
+    <item name="O15" type="color">#727272</item>
+
+</resources>

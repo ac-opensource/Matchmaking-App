@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/material_content_edge_margin_horizontal"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.youniversals.playupgo.profile.ProfileActivity"
+    tools:showIn="@layout/activity_profile">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <FrameLayout
+            android:id="@+id/nameTextViewContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/nameTextView"
+                style="@style/Base.TextAppearance.AppCompat.Title"
+                tools:text="A-Ar Android Concepcion"
+                android:layout_margin="@dimen/material_baseline_grid_1x"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/matchesCountTextView"
+            android:text="0"
+            tools:text="50"
+            style="@style/TextAppearance.AppCompat.Headline"
+            android:layout_marginLeft="@dimen/material_baseline_grid_1x"
+            android:layout_width="@dimen/material_baseline_grid_9x"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/nameTextViewContainer"/>
+
+        <TextView
+            android:layout_below="@+id/matchesCountTextView"
+            android:text="matches"
+            style="@style/TextAppearance.AppCompat.Caption"
+            android:layout_marginLeft="@dimen/material_baseline_grid_1x"
+            android:layout_marginBottom="@dimen/material_baseline_grid_2x"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/matchesLabelTextView"/>
+
+        <TextView
+            android:id="@+id/followersCountTextView"
+            android:text="0"
+            tools:text="100k"
+            style="@style/TextAppearance.AppCompat.Headline"
+            android:layout_marginLeft="@dimen/material_baseline_grid_1x"
+            android:layout_toRightOf="@+id/matchesCountTextView"
+            android:layout_below="@id/nameTextViewContainer"
+            android:layout_width="@dimen/material_baseline_grid_9x"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_below="@+id/matchesCountTextView"
+            android:text="followers"
+            style="@style/TextAppearance.AppCompat.Caption"
+            android:layout_toRightOf="@+id/matchesCountTextView"
+            android:layout_marginLeft="@dimen/material_baseline_grid_1x"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/mostRecentMatchLabelTextView"
+            android:layout_below="@+id/matchesLabelTextView"
+            android:text="Most Recent Match"
+            android:layout_margin="@dimen/material_baseline_grid_1x"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <View
+            android:id="@+id/divider"
+            android:layout_below="@+id/mostRecentMatchLabelTextView"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#DBDBDB"/>
+
+        <TextView
+            android:id="@+id/mostRecentGameTitle"
+            android:layout_below="@+id/divider"
+            tools:text="DOTA 2 @ Intense Core"
+            android:layout_width="wrap_content"
+            android:minWidth="@dimen/material_increment_3x"
+            android:minHeight="@dimen/material_baseline_grid_2x"
+            style="@style/TextAppearance.AppCompat.Body2"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/material_baseline_grid_1x"
+            android:layout_marginLeft="@dimen/material_baseline_grid_1x"
+            />
+
+        <TextView
+            android:id="@+id/mostRecentGameLocationName"
+            tools:text="Intense Core Internet Cafe"
+            android:layout_below="@+id/mostRecentGameTitle"
+            style="@style/TextAppearance.AppCompat.Caption"
+            android:layout_marginLeft="@dimen/material_baseline_grid_3x"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:src="@drawable/ic_location_pin"
+            android:layout_marginLeft="@dimen/material_baseline_grid_1x"
+            android:tint="@color/material_color_red_900"
+            android:layout_below="@id/mostRecentGameTitle"
+            android:layout_alignTop="@id/mostRecentGameLocationName"
+            android:layout_alignBottom="@id/mostRecentGameLocationName"
+            android:layout_width="@dimen/material_baseline_grid_2x"
+            android:layout_height="@dimen/material_baseline_grid_2x"/>
+
+    </RelativeLayout>
+
+</android.support.v4.widget.NestedScrollView>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/transparent"
+              android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/closeDialogImageView"
+        android:layout_width="@dimen/material_button_fab_size"
+        android:layout_height="@dimen/material_button_fab_size"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/ic_close_modal"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/matchesRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/material_bottom_sheet_list_headerless_padding_top"
+        android:background="@color/material_color_white"/>
+
+</LinearLayout>
